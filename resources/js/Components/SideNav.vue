@@ -88,7 +88,9 @@
                 </MDBDropdownToggle>
 
                 <MDBDropdownMenu>
-                    <MDBDropdownItem href="#">Perfil</MDBDropdownItem>
+                    <NavLink class="dropdown-item" :href="route('profile')" as="button">
+                        Perfil
+                    </NavLink>
                     <NavLink class="dropdown-item" :href="route('logout')" method="post" as="button">
                         Cerrar sesión
                     </NavLink>

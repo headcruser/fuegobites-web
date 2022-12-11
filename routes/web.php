@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function () {
 
     Route::inertia('acerca-de','About')->name('about');
 
+    Route::inertia('profile','Profile')->name('profile');
+
 });
 
 require __DIR__.'/auth.php';
