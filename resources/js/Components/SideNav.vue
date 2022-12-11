@@ -80,10 +80,9 @@
                     @click="dropdown3 = !dropdown3"
                 >
                     <img
-                    src="https://via.placeholder.com/30"
+                    src="../img/default-image.png"
                     class="rounded-circle"
-                    height="22"
-                    alt=""
+                    style="width: 25px;"
                     loading="lazy"
                     />
                 </MDBDropdownToggle>
