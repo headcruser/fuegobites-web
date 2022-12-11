@@ -17,7 +17,12 @@ class UsersController extends Controller
             ->when($request->input('search'), function ($q, $search) {
                 $q->where('name', 'like', "%{$search}%");
             })
-            ->paginate($request->input('perPage') ?? 10);;
+            ->paginate($request->input('perPage') ?? 10);
+
+
+        foreach ($users as $user) {
+            $user->append('name_role_user');
+        }
 
         return Inertia::render('Admin/User/Index', [
             'users'     => $users,

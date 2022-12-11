@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -44,4 +45,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected function nameRoleUser(): Attribute
+    {
+        return new Attribute(
+            get:function() {
+
+                $roles = $this->roles;
+
+                if (is_null($roles)) {
+                    return '(Sin Rol)';
+                }
+
+                return $roles->pluck('name')->implode(',');
+            },
+        );
+    }
 }
