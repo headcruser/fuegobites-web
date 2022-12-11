@@ -1,0 +1,155 @@
+<script setup>
+import {
+  MDBCol,
+  MDBRow,
+  MDBContainer,
+  MDBCard,
+  MDBCardHeader,
+  MDBCardBody,
+  MDBInput,
+  MDBBtn,
+  MDBIcon,
+  MDBTable,
+  MDBCheckbox,
+} from "mdb-vue-ui-kit";
+
+import { MDBFileUpload } from "mdb-vue-file-upload";
+
+import { ref, watch } from "vue";
+import { Inertia } from "@inertiajs/inertia";
+
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { useForm } from "@inertiajs/inertia-vue3";
+
+const props = defineProps({
+    roles: Object,
+    user:Object,
+});
+
+
+
+const checkedValues = ref(Object.entries(props.roles).map( option => {
+    const isChecked = props.user.roles.some( role => role.id == option[0]);
+    return {label: option[1],  id: option[0], checked: isChecked};
+}))
+
+const form = useForm({
+    name:props.user.name,
+    email: props.user.email,
+    password: '',
+    photo: '',
+})
+
+const submit = () => {
+    form.transform((data) => ({
+        ...data,
+        roles: checkedValues.value.filter(option => option.checked).map(option => option.id),
+    }))
+
+    form.put(route('admin.users.update',props.user.id),{
+        onSuccess: () => {
+            console.log('ok');
+        },
+    })
+}
+
+</script>
+
+<template>
+    <AuthenticatedLayout>
+        <div class="mt-4 mx-4">
+            <MDBContainer>
+                <!--Section: Content-->
+                <section>
+                    <MDBRow>
+                    <MDBCol md="12" class="mb-4 mb-md-0">
+                        <MDBCard class="mb-4">
+                        <MDBCardHeader class="py-3">
+                            <strong>Crear usuario</strong>
+                        </MDBCardHeader>
+                        <MDBCardBody text="center">
+                            <form @submit.prevent="submit">
+                                <MDBRow>
+                                    <MDBCol class="col-12 col-sm-6">
+                                        <div class="mb-3">
+                                            <strong>Foto</strong>
+                                        </div>
+
+                                        <div class="d-flex justify-content-center mb-4 border-1">
+                                            <MDBFileUpload
+                                                :defaultFiles="[]"
+                                                defaultMsg="Arrastre y suelte un archivo"
+                                                class="shadow-1"
+                                                disabledRemoveBtn
+                                            />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <MDBInput
+                                                type="text"
+                                                v-model="form.name"
+                                                label="Nombre"
+                                                wrapperClass="mb-4"
+                                            />
+                                            <div v-if="form.errors.name" class="invalid-feedback">
+                                                {{ form.errors.name }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <MDBInput
+                                                type="email"
+                                                v-model="form.email"
+                                                label="Correo"
+                                                wrapperClass="mb-4"
+                                            />
+
+                                            <div v-if="form.errors.email" class="invalid-feedback">
+                                                {{ form.errors.email }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <MDBInput
+                                                type="password"
+                                                v-model="form.password"
+                                                label="Contraseña"
+                                                wrapperClass="mb-4"
+                                                aria-autocomplete="off"
+                                            />
+
+                                            <div v-if="form.errors.password" class="invalid-feedback">
+                                                {{ form.errors.password }}
+                                            </div>
+                                        </div>
+
+                                        <MDBBtn color="primary" class="mb-2" type="submit" :disabled="form.processing"> Guardar </MDBBtn>
+
+                                    </MDBCol>
+
+                                    <MDBCol class="col-12 col-sm-6">
+                                        <div class="mb-3">
+                                            <strong>Roles</strong>
+                                        </div>
+                                        <div>
+                                            <template v-for="(option,key) in checkedValues" :key="key">
+                                                <MDBCheckbox :label="option.label" :value="option.id" v-model="option.checked"/>
+                                            </template>
+                                            <!-- <mdb-input v-for="option in options" type="checkbox" :id="option.label" v-model="option.checked" :key="option.id" :label="option.label" >{{option.checked}}</mdb-input> -->
+                                        </div>
+
+
+                                    </MDBCol>
+                                </MDBRow>
+                            </form>
+                        </MDBCardBody>
+                        </MDBCard>
+
+                    </MDBCol>
+                    </MDBRow>
+                </section>
+                <!--Section: Content-->
+            </MDBContainer>
+        </div>
+    </AuthenticatedLayout>
+</template>
