@@ -22,6 +22,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return Inertia::render('Dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');
+
+    Route::inertia('acerca-de','About')->name('about');
+
 });
 
 require __DIR__.'/auth.php';
@@ -44,11 +47,6 @@ Route::middleware('auth')->group(function () {
         Route::post('perms-save',[PermissionsController::class,'perms_save'])->name('perms.save');
     });
 
-
-    Route::inertia('acerca-de','About')->name('about');
-
-    Route::get('image', [PostController::class,'image']);
-    Route::post('image', [PostController::class,'upload_image'])->name('image.save');
     Route::resource('posts',PostController::class)->parameters([
         'posts' => 'post'
     ]);
