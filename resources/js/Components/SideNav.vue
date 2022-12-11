@@ -20,6 +20,7 @@
 
         <div class="px-4 mb-2 text-center border-bottom">
             <div class="font-medium text-base text-gray-800 mb-2">{{ $page.props.auth.user.name }}</div>
+            <div class="font-medium text-base text-gray-400 mb-2">{{ $page.props.auth.roles.join('') }}</div>
         </div>
         <MDBSideNavMenu accordion>
             <MDBSideNavItem>
@@ -44,6 +45,15 @@
                         <span>Permisos</span>
                     </NavLink>
                 </MDBSideNavItem>
+            </MDBSideNavItem>
+
+            <hr />
+
+            <MDBSideNavItem>
+                <NavLink :href="route('about')"  :active="route().current('about')" @click="handleLinkClick">
+                    <MDBIcon icon="info-circle" class="fa-fw me-3"></MDBIcon>
+                    <span>Acerca de </span>
+                </NavLink>
             </MDBSideNavItem>
 
         </MDBSideNavMenu>

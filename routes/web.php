@@ -45,6 +45,8 @@ Route::middleware('auth')->group(function () {
     });
 
 
+    Route::inertia('acerca-de','About')->name('about');
+
     Route::get('image', [PostController::class,'image']);
     Route::post('image', [PostController::class,'upload_image'])->name('image.save');
     Route::resource('posts',PostController::class)->parameters([
