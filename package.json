@@ -5,7 +5,6 @@
         "build": "vite build"
     },
     "devDependencies": {
-
         "@intlify/vite-plugin-vue-i18n": "^6.0.3",
         "@tailwindcss/forms": "^0.5.3",
         "@vitejs/plugin-vue": "^3.0.0",
@@ -46,6 +45,7 @@
         "mdb-vue-ui-kit": "./resources/mdb/mdb-vue-ui-kit-3.1.0.tgz",
         "mdb-vue-vector-maps": "./resources/mdb/plugins/mdb-vue-vector-maps-2.0.1.tgz",
         "mdb-vue-wysiwyg-editor": "./resources/mdb/plugins/mdb-vue-wysiwyg-editor-2.0.1.tgz",
+        "primevue": "^3.34.1",
         "vue-gates": "^2.1.2",
         "vue-i18n": "^9.2.2",
         "vue-sweetalert2": "^5.0.5"
