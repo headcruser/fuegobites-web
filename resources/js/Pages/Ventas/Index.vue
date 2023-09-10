@@ -77,15 +77,19 @@ const evtClickRegistrar = () => {
         <h4 class="mb-0">Ventas</h4>
 
         <section class="pt-3">
-            <article class="mb-3">
-                <div class="bg-gradient bg-light border d-flex justify-content-between p-2 align-content-center" style="height: 60px;">
-                    <div>
-                        <MDBBtn @click="modalAgregarPedido=true">Agregar pedido</MDBBtn>
+            <MDBListGroup light class="mb-3">
+                <MDBListGroupItem>
+                    <div class="d-flex justify-content-between align-content-center" >
+                        <div>
+                            <MDBBtn @click="modalAgregarPedido=true">Agregar pedido</MDBBtn>
+                        </div>
+                        <h3 class="fw-lighter">Total: <strong> $ {{ totalPedidos }} </strong></h3>
                     </div>
-                    <div class="fw-lighter">Total: $ {{ totalPedidos }}</div>
-                </div>
-            </article>
+                </MDBListGroupItem>
+            </MDBListGroup>
 
+
+            <p class="fw-lighter">{{ props.ventas.length }} Pedidos</p>
             <MDBListGroup light>
                 <MDBListGroupItem
                     class="d-flex justify-content-between align-items-center"
@@ -126,6 +130,7 @@ const evtClickRegistrar = () => {
 
             <div class="form-group">
                 <MDBInput
+                    class="active"
                     type="text"
                     v-model="form.nombre"
                     label="Nombre"
@@ -177,7 +182,7 @@ const evtClickRegistrar = () => {
         <p class="text-muted">{{ ventaSeleccionada.nombre }}</p>
         <p>  {{ moment(ventaSeleccionada.fecha).format('LL') }} </p>
 
-        <p>{{ ventaSeleccionada.descripcion }}</p>
+        <p v-html="ventaSeleccionada.descripcion"></p>
     </Sidebar>
   </AuthenticatedLayout>
 </template>
