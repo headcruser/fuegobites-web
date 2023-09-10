@@ -30,6 +30,8 @@
                 </NavLink>
             </MDBSideNavItem>
 
+            <hr />
+
 
             <MDBSideNavItem collapse icon="cog" title="Administración" >
                 <MDBSideNavItem >
@@ -43,6 +45,18 @@
 
                     <NavLink :href="route('admin.perms.index')" :active="route().current('admin.perms.*')" @click="handleLinkClick">
                         <span>Permisos</span>
+                    </NavLink>
+                </MDBSideNavItem>
+            </MDBSideNavItem>
+
+
+            <MDBSideNavItem collapse :show="route().current('ventas.registro.*')" icon="cash-register" title="Ventas" >
+                <MDBSideNavItem >
+                    <NavLink
+                        :href="route('ventas.registro.index')"
+                        :active="route().current('ventas.registro.*')"
+                        @click="handleLinkClick">
+                        <span>Registrar ventas {{ route().current('ventas.registro.*') }}</span>
                     </NavLink>
                 </MDBSideNavItem>
             </MDBSideNavItem>

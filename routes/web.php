@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\Ventas\VentasController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -30,9 +31,10 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
+
     # NOTE: RUTAS ADMINISTRATIVAS
-    Route::middleware(['verified'])->name('admin.')->prefix('admin')->group(function () {
+    Route::name('admin.')->prefix('admin')->group(function () {
         # NOTE: USUARIOS
         Route::resource('usuarios', UsersController::class)->parameters([
             'usuarios' => 'usuario'
@@ -46,5 +48,10 @@ Route::middleware('auth')->group(function () {
         # NOTE: PERMISOS
         Route::get('permisos', [PermissionsController::class, 'index'])->name('perms.index');
         Route::post('perms-save', [PermissionsController::class, 'perms_save'])->name('perms.save');
+    });
+
+    Route::name('ventas.')->prefix('ventas')->group(function () {
+        Route::get('registro', [VentasController::class, 'index'])->name('registro.index');
+        Route::post('registro', [VentasController::class, 'store'])->name('registro.store');
     });
 });
