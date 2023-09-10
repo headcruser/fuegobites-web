@@ -1,33 +1,31 @@
 <script setup>
 import {
-  MDBContainer,
   MDBCard,
-  MDBCardHeader,
   MDBCardBody,
   MDBCardFooter,
   MDBInput,
   MDBBtn,
   MDBIcon,
-  MDBTable,
   MDBRow,
   MDBCol,
   MDBCardTitle,
 } from "mdb-vue-ui-kit";
 
 import { ref, watch } from "vue";
-import { Inertia } from "@inertiajs/inertia";
-import { Link, useForm } from "@inertiajs/inertia-vue3";
+import { Link ,router} from "@inertiajs/vue3";
+
 import Swal from "sweetalert2";
 
+import defaultImage from '@/img/default-image.png'
+
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import Pagination from "@/Components/Pagination.vue";
 
 const props = defineProps({
   users: Object,
   filters: Object,
 });
 
-const form = useForm();
+
 const search = ref(props.filters.search);
 const perPage = ref(10);
 
@@ -45,7 +43,7 @@ watch(search, (value) => {
   const debouncer = createDebounce();
 
   debouncer(() => {
-    Inertia.get(
+    router.get(
       route("admin.users.index"),
       {
         search: value,
@@ -59,25 +57,32 @@ watch(search, (value) => {
   });
 });
 
-const destroy = (id) => {
-  Swal.fire({
-    title: "¿Deseas eliminar el registro?",
-    text: "Se eliminara el registro!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Si",
-    cancelButtonText: "No",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      form.delete(route("admin.users.destroy", id), {
-        onSuccess: () => {
-          Swal.fire("Eliminado!", "El registro fue eliminado correctamente.", "success");
-        },
-      });
+const destroy = async (user) => {
+
+    if (user?.name_role_user?.includes('administrador')) {
+        return  Swal.fire("Atención", "no puedes eliminar al administrador", "error");
     }
-  });
+
+    const result = await Swal.fire({
+        title: `¿Deseas eliminar al usuario ${user.name}?`,
+        text: "Se eliminara el registro!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si",
+        cancelButtonText: "No",
+    })
+
+    if (!result.isConfirmed) {
+        return;
+    }
+
+    router.delete(route("admin.users.destroy", id), {
+        onSuccess: () => {
+            Swal.fire("Eliminado!", "El registro fue eliminado correctamente.", "success");
+        },
+    });
 };
 </script>
 
@@ -108,7 +113,7 @@ const destroy = (id) => {
               <MDBCardBody class="text-center">
                 <img
                   class="rounded-circle shadow-1 mb-3 d-block"
-                  src="../../../img/default-image.png"
+                  :src="defaultImage"
                   alt="avatar"
                   style="width: 45px; margin: auto; display: block"
                 />
@@ -117,7 +122,7 @@ const destroy = (id) => {
 
                 <MDBCardText>
                   <a :href="`mailto:${user.email}`">{{ user.email }}</a>
-                  <p>{{ user.name_role_user }}</p>
+                  <p>{{ user.name_role_user || 'Sin Rol' }}</p>
                 </MDBCardText>
               </MDBCardBody>
               <MDBCardFooter class="d-flex justify-content-center">
@@ -131,10 +136,11 @@ const destroy = (id) => {
                 </Link>
 
                 <MDBBtn outline="danger"
+                    :disabled="user.name_role_user == 'administrador'"
                     title="Eliminar"
                     size="small"
                     floating
-                    @click="destroy(user.id)"
+                    @click="destroy(user)"
                 >
                     <MDBIcon icon="trash"></MDBIcon>
                 </MDBBtn>

@@ -1,6 +1,5 @@
 <script setup>
 import {
-  MDBContainer,
   MDBCard,
   MDBCardHeader,
   MDBCardBody,
@@ -11,8 +10,7 @@ import {
 } from "mdb-vue-ui-kit";
 
 import { ref, watch } from "vue";
-import { Inertia } from "@inertiajs/inertia";
-import { Link ,useForm} from '@inertiajs/inertia-vue3'
+import { Link ,router} from '@inertiajs/vue3'
 import Swal from 'sweetalert2'
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
@@ -23,7 +21,7 @@ const props = defineProps({
     filters: Object
 });
 
-const form = useForm();
+// const form = useForm();
 const search = ref(props.filters.search);
 const perPage = ref(10);
 
@@ -42,7 +40,7 @@ watch(search,(value) => {
     const debouncer = createDebounce();
 
     debouncer(() => {
-        Inertia.get(route('admin.roles.index'),{
+        router.get(route('admin.roles.index'),{
                 search: value,
                 perPage: perPage.value,
             },
@@ -54,8 +52,13 @@ watch(search,(value) => {
      })
 })
 
-const destroy = (id)  => {
-    Swal.fire({
+const destroy = async (role)  => {
+
+    if(role.name.includes('administrador')){
+        return Swal.fire("Atención", "No puedes eliminar al administrador.", "error");
+    }
+
+    const result = await Swal.fire({
         title: '¿Deseas eliminar el registro?',
         text: "Se eliminara el registro!",
         icon: 'warning',
@@ -64,21 +67,17 @@ const destroy = (id)  => {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Si',
         cancelButtonText: 'No'
-    }).then((result) => {
-        if (result.isConfirmed) {
-
-            form.delete(route('admin.roles.destroy', id),{
-                onSuccess: () => {
-                    Swal.fire(
-                    'Eliminado!',
-                    'El registro fue eliminado correctamente.',
-                    'success'
-                    )
-                },
-            });
-
-        }
     })
+
+    if (!result.isConfirmed) {
+        return;
+    }
+
+    router.delete(route('admin.roles.destroy', role.id), {
+        onSuccess: () => {
+            Swal.fire("Eliminado!", "El registro fue eliminado correctamente.", "success");
+        },
+    });
 }
 
 </script>
@@ -134,7 +133,8 @@ const destroy = (id)  => {
                                     title="Eliminar"
                                     size="small"
                                     floating
-                                    @click="destroy(role.id)"
+                                    :disabled="role.name.includes('administrador')"
+                                    @click="destroy(role)"
                                 >
                                     <MDBIcon  icon="trash"></MDBIcon>
                                 </MDBBtn>

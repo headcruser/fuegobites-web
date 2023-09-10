@@ -1,28 +1,19 @@
 <script setup>
 import {
-  MDBContainer,
   MDBCard,
   MDBCardHeader,
   MDBCardBody,
-  MDBInput,
-  MDBBtn,
-  MDBIcon,
   MDBTable,
 } from "mdb-vue-ui-kit";
 
-import { ref, watch ,computed} from "vue";
-import { useForm,usePage } from '@inertiajs/inertia-vue3';
-import { Inertia } from "@inertiajs/inertia";
+import { router } from "@inertiajs/vue3";
 
-import Swal from 'sweetalert2'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 const props = defineProps({
     roles: Object,
     perms: Object
 });
-
-const form = useForm();
 
 const onClickOption = (e,role,perm) => {
     const $td = e.target;
@@ -32,17 +23,12 @@ const onClickOption = (e,role,perm) => {
         'id_perm' : perm.id,
     }
 
-    Inertia.post(route('admin.perms.save'), data, {
+    router.post(route('admin.perms.save'), data, {
         success: function(){
             $td.innerText = ($td.innerText) ? '': 'X';
         }
     })
 }
-
-const info = computed(() => usePage().props.value)
-
-    console.log(info.value);
-
 </script>
 
 <template>

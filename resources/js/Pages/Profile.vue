@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from "vue";
-import { usePage } from '@inertiajs/inertia-vue3'
+import { usePage } from '@inertiajs/vue3'
 
 import {
   MDBInput,
@@ -8,7 +8,7 @@ import {
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
-const roleNames = computed(() =>  usePage().props.value.auth.roles.join(''));
+const roleNames = computed(() =>  usePage().props.auth.roles.join(''));
 
 </script>
 

@@ -12,7 +12,7 @@ import {
 } from "mdb-vue-ui-kit";
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/vue3";
 
 const props = defineProps({
     role: Object,

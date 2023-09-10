@@ -23,34 +23,28 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');
 
-    Route::inertia('acerca-de','About')->name('about');
+    Route::inertia('acerca-de', 'About')->name('about');
 
-    Route::inertia('profile','Profile')->name('profile');
-
+    Route::inertia('profile', 'Profile')->name('profile');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::middleware('auth')->group(function () {
     # NOTE: RUTAS ADMINISTRATIVAS
     Route::middleware(['verified'])->name('admin.')->prefix('admin')->group(function () {
         # NOTE: USUARIOS
-        Route::resource('usuarios',UsersController::class)->parameters([
+        Route::resource('usuarios', UsersController::class)->parameters([
             'usuarios' => 'usuario'
         ])->names('users');
 
         # NOTE: ROLES
-        Route::resource('roles',RolesController::class)->parameters([
+        Route::resource('roles', RolesController::class)->parameters([
             'roles' => 'role'
         ])->names('roles');
 
         # NOTE: PERMISOS
-        Route::get('permisos',[PermissionsController::class,'index'])->name('perms.index');
-        Route::post('perms-save',[PermissionsController::class,'perms_save'])->name('perms.save');
+        Route::get('permisos', [PermissionsController::class, 'index'])->name('perms.index');
+        Route::post('perms-save', [PermissionsController::class, 'perms_save'])->name('perms.save');
     });
-
-    Route::resource('posts',PostController::class)->parameters([
-        'posts' => 'post'
-    ]);
 });
-

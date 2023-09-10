@@ -1,9 +1,8 @@
 <script setup>
-import { useForm } from "@inertiajs/inertia-vue3";
-import ApplicationLogo from "@/Components/ApplicationLogo.vue";
+import { useForm } from "@inertiajs/vue3";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 
-import { MDBRow, MDBCol, MDBBtn, MDBInput, MDBCheckbox, MDBIcon } from "mdb-vue-ui-kit";
+import { MDBRow, MDBCol, MDBBtn, MDBInput, MDBCheckbox } from "mdb-vue-ui-kit";
 
 defineProps({
   canResetPassword: Boolean,

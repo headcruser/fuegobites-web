@@ -10,11 +10,17 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
           <div class="col-12">
             <h4 class="text-uppercase fw-bold ls-tighter mb-3">Daniel Martinez Sierra</h4>
             <p class="lead mb-4">
-              Proyecto <strong>Laravel 9 + MDB + vite  + Breeze + vuejs</strong>, template inicial para trabajar en proyectos
-              con la configuración que utilizo en mi dia a dia
+              Proyecto que integra las siguientes tecnologías
             </p>
+            <ul>
+                <li>Laravel 10</li>
+                <li>MDB</li>
+                <li>Inertia</li>
+                <li>Breeze</li>
+                <li>Vuejs</li>
+            </ul>
 
-            <span class="lead">2022</span>
+            <span class="lead">2023</span>
             <h6 class="mb-0">Contacto: <a href="mailto:headcruser@gmial.com">headcruser@gmail.com</a></h6>
           </div>
         </div>

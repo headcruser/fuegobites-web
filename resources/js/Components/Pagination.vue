@@ -12,7 +12,7 @@ defineProps({
 
 <template>
     <nav aria-label="Paginación">
-        <MDBPagination class="justify-content-end">
+        <MDBPagination class="justify-content-end" circle>
             <template v-for="(link, k) in links"  :key="k">
                 <MDBPageNav  prev icon v-if="link.label.includes('laquo')" :href="link.url"></MDBPageNav>
                 <MDBPageItem v-if="!link.label.includes('&')" :href="link.url"> {{ link.label }}</MDBPageItem>

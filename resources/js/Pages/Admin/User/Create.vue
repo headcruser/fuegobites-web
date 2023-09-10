@@ -8,18 +8,15 @@ import {
   MDBCardBody,
   MDBInput,
   MDBBtn,
-  MDBIcon,
-  MDBTable,
   MDBCheckbox,
 } from "mdb-vue-ui-kit";
 
 import { MDBFileUpload } from "mdb-vue-file-upload";
 
-import { ref, watch } from "vue";
-import { Inertia } from "@inertiajs/inertia";
+import { ref } from "vue";
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm} from "@inertiajs/vue3";
 
 const props = defineProps({
     roles: Object,

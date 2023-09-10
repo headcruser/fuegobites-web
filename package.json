@@ -5,9 +5,7 @@
         "build": "vite build"
     },
     "devDependencies": {
-        "@inertiajs/inertia": "^0.11.0",
-        "@inertiajs/inertia-vue3": "^0.6.0",
-        "@inertiajs/progress": "^0.2.7",
+
         "@intlify/vite-plugin-vue-i18n": "^6.0.3",
         "@tailwindcss/forms": "^0.5.3",
         "@vitejs/plugin-vue": "^3.0.0",
@@ -21,6 +19,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "@inertiajs/vue3": "^1.0.7",
         "mdb-vue-calendar": "./resources/mdb/plugins/mdb-vue-calendar-3.0.1.tgz",
         "mdb-vue-captcha": "./resources/mdb/plugins/mdb-vue-captcha-2.0.1.tgz",
         "mdb-vue-color-picker": "./resources/mdb/plugins/mdb-vue-color-picker-2.0.1.tgz",
