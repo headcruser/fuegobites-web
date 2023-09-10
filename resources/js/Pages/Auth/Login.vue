@@ -3,11 +3,14 @@ import { useForm } from "@inertiajs/vue3";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 
 import { MDBRow, MDBCol, MDBBtn, MDBInput, MDBCheckbox } from "mdb-vue-ui-kit";
+import { ref } from "vue";
 
 defineProps({
   canResetPassword: Boolean,
   status: String,
 });
+
+const vVisiblePassword = ref(false);
 
 const form = useForm({
   email: "",
@@ -19,7 +22,13 @@ const submit = () => {
   form.post(route("login"), {
     onFinish: () => form.reset("password"),
   });
-};
+}
+
+const f_ShowPassword = () => {
+  vVisiblePassword.value = !vVisiblePassword.value;
+}
+
+console.log(form);
 </script>
 
 <template>
@@ -29,65 +38,90 @@ const submit = () => {
     </div>
 
     <form @submit.prevent="submit" novalidate>
-      <!-- Email input -->
-      <MDBInput
-        type="email"
-        v-model="form.email"
-        size="lg"
-        autofocus
-        autocomplete="username"
-        label="Correo"
-        wrapperClass="mb-5"
-        :class="{
-          'is-invalid': form.errors.email != '' && form.email == '' && form.hasErrors,
-        }"
-        :invalidFeedback="form.errors.email"
-        required
-      />
-      <!-- Password input -->
-      <MDBInput
-        type="password"
-        size="lg"
-        v-model="form.password"
-        :class="{
-          'is-invalid':
-            form.errors.password != '' && form.hasErrors,
-        }"
-        :invalidFeedback="form.errors.password"
-        label="Contraseña"
-        wrapperClass="mb-4"
-        required
-      />
+        <MDBRow class="pb-4">
+            <MDBCol col="12">
+                <MDBInput
+                    type="email"
+                    v-model="form.email"
+                    size="lg"
+                    autofocus
+                    autocomplete="username"
+                    label="Correo"
+                    :class="{
+                    'is-invalid': form.hasErrors && form.errors.email != undefined
+                    }"
+                    :invalidFeedback="form.errors.email"
+                    required
+                />
+            </MDBCol>
+        </MDBRow>
 
-      <!-- 2 column grid layout -->
-      <MDBRow class="mb-5 pt-3">
-        <MDBCol md="6" class="d-flex justify-content-center">
-          <!-- Checkbox -->
-          <MDBCheckbox
-            label="Recordarme"
-            v-model:checked="form.remember"
-            wrapperClass="mb-3 mb-md-0"
-            checked
-          />
-        </MDBCol>
+        <MDBRow class="pb-4">
+            <MDBCol col="12">
+                <div class="d-flex align-content-center  align-items-center">
+                    <MDBInput
+                        :type="vVisiblePassword ? 'text': 'password'"
+                        wrapperClass="w-100"
+                        size="lg"
+                        v-model="form.password"
+                        :class="{
+                        'is-invalid':form.hasErrors && (form.errors.password != undefined )
+                        }"
+                        :helper="form.errors.password"
+                        label="Contraseña"
+                        required
+                    />
+                    <div>
+                        <i
+                        class="fas fa-lg ms-3"
+                        :title="vVisiblePassword ? 'Ocultar contraseña': 'Mostrar contraseña'"
+                        :class="{'fa-eye':vVisiblePassword,'fa-eye-slash':!vVisiblePassword}"
+                        @click="f_ShowPassword"></i>
+                    </div>
+                </div>
+            </MDBCol>
+        </MDBRow>
+        <!-- Password input -->
 
-        <MDBCol md="6" class="d-flex justify-content-center">
-          <!-- Simple link -->
-          <a :href="route('password.request')">¿Olvidaste tu contraseña?</a>
-        </MDBCol>
-      </MDBRow>
 
-      <!-- Submit button -->
-      <MDBBtn
-        color="primary"
-        type="submit"
-        block
-        class="mb-4"
-        :class="{ 'opacity-25': form.processing }"
-        :disabled="form.processing"
-      >
-        Iniciar Sesión
-      </MDBBtn>
+        <MDBRow class="mb-4 pt-2">
+            <MDBCol md="6">
+            <!-- Checkbox -->
+            <MDBCheckbox
+                label="Recordarme"
+                v-model:checked="form.remember"
+                wrapperClass="mb-3 mb-md-0"
+                checked
+            />
+            </MDBCol>
+
+            <MDBCol md="6" class="d-flex justify-content-end">
+            <!-- Simple link -->
+            <a :href="route('password.request')">¿Olvidaste tu contraseña?</a>
+            </MDBCol>
+        </MDBRow>
+
+        <!-- Submit button -->
+        <MDBBtn
+            color="primary"
+            type="submit"
+            block
+            class="mb-4"
+            :class="{ 'opacity-25': form.processing }"
+            :disabled="form.processing"
+        >
+            Iniciar Sesión
+        </MDBBtn>
     </form>
   </GuestLayout>
 </template>
+
+<style>
+    .form-helper{
+        color: #dc4c64 !important;
+    }
+
+    .was-validated .form-control:invalid, .form-control.is-invalid[type="password"]{
+        margin-bottom: 0.25rem;
+    }
+</style>

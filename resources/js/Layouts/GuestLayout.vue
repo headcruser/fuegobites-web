@@ -21,7 +21,7 @@ import {
       <MDBCol md="6">
         <MDBCard>
           <MDBCardBody class="p-4">
-            <div class="flex flex-col sm:justify-center items-center mb-5">
+            <div class="flex flex-col sm:justify-center items-center mb-4">
                 <Link href="/">
                     <ApplicationLogo class="w-20 h-20 fill-current text-gray-500" />
                 </Link>
