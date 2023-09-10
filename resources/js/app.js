@@ -40,6 +40,8 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Permissions from './Plugins/Permissions';
 import VueGates from 'vue-gates';
 
+import PrimeVue from 'primevue/config';
+
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 createInertiaApp({
@@ -55,6 +57,7 @@ createInertiaApp({
             .use(Permissions)
             .use(ZiggyVue, Ziggy)
             .use(VueSweetalert2)
+            .use(PrimeVue)
             .mount(el);
     },
 });

@@ -45,7 +45,9 @@
         "mdb-vue-ui-kit": "./resources/mdb/mdb-vue-ui-kit-3.1.0.tgz",
         "mdb-vue-vector-maps": "./resources/mdb/plugins/mdb-vue-vector-maps-2.0.1.tgz",
         "mdb-vue-wysiwyg-editor": "./resources/mdb/plugins/mdb-vue-wysiwyg-editor-2.0.1.tgz",
+        "moment": "^2.29.4",
         "primevue": "^3.34.1",
+        "quill": "^1.3.7",
         "vue-gates": "^2.1.2",
         "vue-i18n": "^9.2.2",
         "vue-sweetalert2": "^5.0.5"
