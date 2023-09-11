@@ -1,30 +1,44 @@
 <script setup>
+import {
+    MDBCard,
+    MDBCardBody,
+    MDBCardTitle,
+    MDBCardHeader,
+MDBCardFooter,
+
+} from "mdb-vue-ui-kit";
+
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 </script>
 
 <template>
   <AuthenticatedLayout>
-    <section class="mb-10" style="background-color: #f3f7fa">
-      <div class="container py-5">
-        <div class="row my-md-4 gx-md-5">
-          <div class="col-12">
-            <h4 class="text-uppercase fw-bold ls-tighter mb-3">Daniel Martinez Sierra</h4>
-            <p class="lead mb-4">
-              Proyecto que integra las siguientes tecnologías
-            </p>
-            <ul>
-                <li>Laravel 10</li>
-                <li>MDB</li>
-                <li>Inertia</li>
-                <li>Breeze</li>
-                <li>Vuejs</li>
-            </ul>
+      <div class="container-fluid p-4">
+        <MDBCard>
+            <MDBCardHeader>Acerca de </MDBCardHeader>
+            <MDBCardBody>
+                <MDBCardTitle>Fuego Bites</MDBCardTitle>
+                <p class="lead mb-4">
+                    Proyecto que integra las siguientes tecnologías
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-1"> <i class="fas fa-long-arrow-alt-right me-2 text-info"></i> Laravel 10</li>
+                    <li class="mb-1"><i class="fas fa-long-arrow-alt-right me-2 text-info"></i> MDB</li>
+                    <li class="mb-1"><i class="fas fa-long-arrow-alt-right me-2 text-info"></i> Inertia</li>
+                    <li class="mb-1"><i class="fas fa-long-arrow-alt-right me-2 text-info"></i> Breeze</li>
+                    <li class="mb-1"> <i class="fas fa-long-arrow-alt-right me-2 text-info"></i> Vuejs</li>
+                </ul>
 
-            <span class="lead">2023</span>
-            <h6 class="mb-0">Contacto: <a href="mailto:headcruser@gmial.com">headcruser@gmail.com</a></h6>
-          </div>
-        </div>
+
+
+            </MDBCardBody>
+            <MDBCardFooter >
+                <p class="text-muted">
+                    &copy; 2023 Desarrollado por <mark>Daniel Martinez Sierra</mark>
+                </p>
+            </MDBCardFooter>
+        </MDBCard>
       </div>
-    </section>
+
   </AuthenticatedLayout>
 </template>
