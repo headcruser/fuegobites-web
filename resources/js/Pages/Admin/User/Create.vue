@@ -17,6 +17,7 @@ import { ref } from "vue";
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { useForm} from "@inertiajs/vue3";
+import defaultImage from '@/img/default-image.png'
 
 const props = defineProps({
     roles: Object,
@@ -60,7 +61,7 @@ const submit = () => {
                         <MDBCardHeader class="py-3">
                             <strong>Crear usuario</strong>
                         </MDBCardHeader>
-                        <MDBCardBody text="center">
+                        <MDBCardBody>
                             <form @submit.prevent="submit">
                                 <MDBRow>
                                     <MDBCol class="col-12 col-sm-6">
@@ -70,10 +71,13 @@ const submit = () => {
 
                                         <div class="d-flex justify-content-center mb-4 border-1">
                                             <MDBFileUpload
-                                                :defaultFiles="[]"
+                                                :defaultFiles="[
+                                                    defaultImage
+                                                ]"
                                                 defaultMsg="Arrastre y suelte un archivo"
                                                 class="shadow-1"
                                                 disabledRemoveBtn
+                                                @input="form.photo = $event.target.files[0]"
                                             />
                                         </div>
 
@@ -83,6 +87,7 @@ const submit = () => {
                                                 v-model="form.name"
                                                 label="Nombre"
                                                 wrapperClass="mb-4"
+                                                autocomplete="off"
                                             />
                                             <div v-if="form.errors.name" class="invalid-feedback">
                                                 {{ form.errors.name }}
@@ -94,6 +99,7 @@ const submit = () => {
                                                 type="email"
                                                 v-model="form.email"
                                                 label="Correo"
+                                                autocomplete="off"
                                                 wrapperClass="mb-4"
                                             />
 
@@ -102,12 +108,13 @@ const submit = () => {
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group pb-4">
                                             <MDBInput
                                                 type="password"
                                                 v-model="form.password"
                                                 label="Contraseña"
                                                 wrapperClass="mb-4"
+                                                autocomplete="off"
                                                 aria-autocomplete="off"
                                             />
 
@@ -116,7 +123,7 @@ const submit = () => {
                                             </div>
                                         </div>
 
-                                        <MDBBtn color="primary" class="mb-2" type="submit" :disabled="form.processing"> Guardar </MDBBtn>
+                                        <MDBBtn color="primary" class="btn-block" type="submit" :disabled="form.processing"> Guardar </MDBBtn>
 
                                     </MDBCol>
 
@@ -130,8 +137,6 @@ const submit = () => {
                                             </template>
                                             <!-- <mdb-input v-for="option in options" type="checkbox" :id="option.label" v-model="option.checked" :key="option.id" :label="option.label" >{{option.checked}}</mdb-input> -->
                                         </div>
-
-
                                     </MDBCol>
                                 </MDBRow>
                             </form>

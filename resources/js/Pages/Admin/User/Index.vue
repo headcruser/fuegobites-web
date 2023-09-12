@@ -108,12 +108,12 @@ const destroy = async (user) => {
 
       <MDBRow>
         <template v-for="user in users.data" :key="user.id">
-          <MDBCol sm="4">
+          <MDBCol sm="4" class="pb-4">
             <MDBCard>
               <MDBCardBody class="text-center">
                 <img
                   class="rounded-circle shadow-1 mb-3 d-block"
-                  :src="defaultImage"
+                  :src="user.photo ? `/storage/users/${user.id}/${user.photo}`: defaultImage"
                   alt="avatar"
                   style="width: 45px; margin: auto; display: block"
                 />
@@ -136,7 +136,7 @@ const destroy = async (user) => {
                 </Link>
 
                 <MDBBtn outline="danger"
-                    :disabled="user.name_role_user == 'administrador'"
+                    :disabled="user.name_role_user == 'administrador' && user.id == 1"
                     title="Eliminar"
                     size="small"
                     floating
