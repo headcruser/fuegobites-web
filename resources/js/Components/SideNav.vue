@@ -16,6 +16,8 @@ import {
 import { ref } from "vue";
 
 import logotipo from '@/img/fuego-bites.png';
+import defaultImage from '@/img/default-image.png'
+
 import NavLink from '@/Components/NavLink.vue';
 
 const sidenavMDB = ref(true);
@@ -119,7 +121,11 @@ const handleLinkClick = () => {
             <MDBNavbarNav right class="d-flex flex-row">
                 <MDBDropdown v-model="dropdown3" class="nav-item me-3 me-lg-0">
                     <MDBDropdownToggle tag="a" class="nav-link" @click="dropdown3 = !dropdown3">
-                        <img src="../img/default-image.png" class="rounded-circle" style="width: 25px;" loading="lazy" />
+                        <img
+                          :src="$page.props.auth.user?.photo ? `/storage/users/${$page.props.auth.user.id}/${$page.props.auth.user.photo}`: defaultImage"
+                          class="rounded-circle"
+                          style="width: 25px;"
+                          loading="lazy" />
                     </MDBDropdownToggle>
 
                     <MDBDropdownMenu>

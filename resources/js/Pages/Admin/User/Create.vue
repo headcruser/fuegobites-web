@@ -17,7 +17,6 @@ import { ref } from "vue";
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { useForm} from "@inertiajs/vue3";
-import defaultImage from '@/img/default-image.png'
 
 const props = defineProps({
     roles: Object,
@@ -71,9 +70,7 @@ const submit = () => {
 
                                         <div class="d-flex justify-content-center mb-4 border-1">
                                             <MDBFileUpload
-                                                :defaultFiles="[
-                                                    defaultImage
-                                                ]"
+                                                :defaultFiles="[]"
                                                 defaultMsg="Arrastre y suelte un archivo"
                                                 class="shadow-1"
                                                 disabledRemoveBtn

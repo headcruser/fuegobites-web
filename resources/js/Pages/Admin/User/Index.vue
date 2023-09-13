@@ -115,7 +115,7 @@ const destroy = async (user) => {
                   class="rounded-circle shadow-1 mb-3 d-block"
                   :src="user.photo ? `/storage/users/${user.id}/${user.photo}`: defaultImage"
                   alt="avatar"
-                  style="width: 45px; margin: auto; display: block"
+                  style="width: 45px;height: 45px; margin: auto; display: block"
                 />
 
                 <MDBCardTitle>{{ user.name }}</MDBCardTitle>

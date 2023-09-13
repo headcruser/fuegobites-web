@@ -30,7 +30,7 @@ const roleNames = computed(() =>  usePage().props.auth.roles.join(''));
                       <div class="d-flex justify-content-center mb-4">
                         <img
                             class="rounded-circle shadow-1 mb-3 d-block"
-                            :src="defaultImage"
+                            :src="$page.props.auth.user?.photo ? `/storage/users/${$page.props.auth.user.id}/${$page.props.auth.user.photo}`: defaultImage"
                             alt="avatar"
                             style="width: 90px; margin: auto; display: block"
                           />

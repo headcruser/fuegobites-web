@@ -40,14 +40,11 @@ const form = useForm({
 const submit = () => {
     form.transform((data) => ({
         ...data,
+        _method: 'put',
         roles: checkedValues.value.filter(option => option.checked).map(option => option.id),
     }))
 
-    form.put(route('admin.users.update',props.user.id),{
-        onSuccess: () => {
-            console.log('ok');
-        },
-    })
+    form.post(route('admin.users.update',props.user.id),{})
 }
 
 </script>
@@ -62,9 +59,9 @@ const submit = () => {
                     <MDBCol md="12" class="mb-4 mb-md-0">
                         <MDBCard class="mb-4">
                         <MDBCardHeader class="py-3">
-                            <strong>Crear usuario</strong>
+                            <strong>Editar usuario</strong>
                         </MDBCardHeader>
-                        <MDBCardBody text="center">
+                        <MDBCardBody>
                             <form @submit.prevent="submit">
                                 <MDBRow>
                                     <MDBCol class="col-12 col-sm-6">
@@ -72,12 +69,24 @@ const submit = () => {
                                             <strong>Foto</strong>
                                         </div>
 
+                                        <div class="d-flex justify-content-center">
+                                            <img
+                                                v-if="user.photo"
+                                                class="rounded-circle shadow-1 mb-3"
+                                                :src="`/storage/users/${user.id}/${user.photo}`"
+                                                alt="avatar"
+                                                style="width: 50px"
+                                            />
+                                        </div>
+
                                         <div class="d-flex justify-content-center mb-4 border-1">
                                             <MDBFileUpload
-                                                :defaultFiles="[]"
+                                                :defaultFiles="[
+                                                ]"
                                                 defaultMsg="Arrastre y suelte un archivo"
                                                 class="shadow-1"
                                                 disabledRemoveBtn
+                                                @input="form.photo = $event.target.files[0]"
                                             />
                                         </div>
 
@@ -106,13 +115,14 @@ const submit = () => {
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group pb-4">
                                             <MDBInput
                                                 type="password"
                                                 v-model="form.password"
                                                 label="Contraseña"
                                                 wrapperClass="mb-4"
                                                 aria-autocomplete="off"
+                                                helper="Escribir solo si deseas cambiar la contraseña"
                                             />
 
                                             <div v-if="form.errors.password" class="invalid-feedback">
@@ -120,7 +130,7 @@ const submit = () => {
                                             </div>
                                         </div>
 
-                                        <MDBBtn color="primary" class="mb-2" type="submit" :disabled="form.processing"> Guardar </MDBBtn>
+                                        <MDBBtn color="primary" block class="mb-2" type="submit" :disabled="form.processing"> Guardar </MDBBtn>
 
                                     </MDBCol>
 
