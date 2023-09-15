@@ -71,6 +71,11 @@ const handleLinkClick = () => {
                             @click="handleLinkClick">
                             <span>Permisos</span>
                         </NavLink>
+
+                        <NavLink :href="route('admin.productos.index')" :active="route().current('admin.productos.*')"
+                            @click="handleLinkClick">
+                            <span>Productos</span>
+                        </NavLink>
                     </MDBSideNavItem>
                 </MDBSideNavItem>
 

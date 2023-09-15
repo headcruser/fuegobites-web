@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\PermissionsController;
+use App\Http\Controllers\Admin\ProductosController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\PostController;
@@ -48,6 +49,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         # NOTE: PERMISOS
         Route::get('permisos', [PermissionsController::class, 'index'])->name('perms.index');
         Route::post('perms-save', [PermissionsController::class, 'perms_save'])->name('perms.save');
+
+        # NOTE: PRODUCTOS
+        Route::resource('productos', ProductosController::class)->parameters([
+            'productos' => 'producto'
+        ])->names('productos');
     });
 
     Route::name('ventas.')->prefix('ventas')->group(function () {
