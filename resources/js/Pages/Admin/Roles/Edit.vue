@@ -8,7 +8,6 @@ import {
   MDBCardBody,
   MDBInput,
   MDBBtn,
-  MDBIcon,
 } from "mdb-vue-ui-kit";
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
@@ -35,8 +34,8 @@ const submit = () => {
 
 <template>
     <AuthenticatedLayout>
-        <div class="mt-4 mx-4">
-            <MDBContainer>
+        <div class="mt-3 mx-3">
+            <MDBContainer fluid>
                 <!--Section: Content-->
                 <section>
                     <MDBRow>
@@ -47,37 +46,33 @@ const submit = () => {
                                 </MDBCardHeader>
                                 <MDBCardBody text="center">
                                     <form @submit.prevent="submit">
-                                        <MDBRow>
-                                            <MDBCol class="col-12">
-                                                <div class="form-group">
-                                                    <MDBInput
-                                                        type="text"
-                                                        v-model="form.name"
-                                                        label="Nombre"
-                                                        wrapperClass="mb-4"
-                                                    />
-                                                    <div v-if="form.errors.name" class="invalid-feedback">
-                                                        {{ form.errors.name }}
-                                                    </div>
-                                                </div>
 
-                                                <div class="form-group">
-                                                    <MDBInput
-                                                        type="text"
-                                                        v-model="form.description"
-                                                        label="Descripción"
-                                                        wrapperClass="mb-4"
-                                                    />
+                                        <div class="form-group pb-4">
+                                            <MDBInput
+                                                type="text"
+                                                v-model="form.name"
+                                                label="Nombre"
+                                                :class="{'is-invalid':form.errors.name}"
+                                                :invalid-feedback="form.errors.name"
+                                            />
+                                        </div>
 
-                                                    <div v-if="form.errors.description" class="invalid-feedback">
-                                                        {{ form.errors.description }}
-                                                    </div>
-                                                </div>
+                                        <div class="form-group pb-4">
+                                            <MDBInput
+                                                type="text"
+                                                v-model="form.description"
+                                                label="Descripción"
+                                                :class="{'is-invalid':form.errors.description}"
+                                                :invalid-feedback="form.errors.description"
+                                            />
+                                        </div>
 
-                                                <MDBBtn color="primary" class="mb-2" type="submit" :disabled="form.processing"> Guardar </MDBBtn>
-
-                                            </MDBCol>
-                                        </MDBRow>
+                                        <MDBBtn
+                                            block
+                                            color="primary"
+                                            class="mb-2"
+                                            type="submit"
+                                            :disabled="form.processing"> Guardar </MDBBtn>
                                     </form>
                                 </MDBCardBody>
                             </MDBCard>

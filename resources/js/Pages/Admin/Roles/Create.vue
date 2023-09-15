@@ -8,7 +8,6 @@ import {
   MDBCardBody,
   MDBInput,
   MDBBtn,
-  MDBIcon,
 } from "mdb-vue-ui-kit";
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
@@ -33,57 +32,49 @@ const submit = () => {
 
 <template>
     <AuthenticatedLayout>
-        <div class="mt-4 mx-4">
-            <MDBContainer>
+        <div class="mt-3 mx-3">
+            <MDBContainer fluid>
                 <!--Section: Content-->
                 <section>
                     <MDBRow>
-                    <MDBCol md="12" class="mb-4 mb-md-0">
-                        <MDBCard class="mb-4">
-                        <MDBCardHeader class="py-3">
-                            <strong>Crear Rol</strong>
-                        </MDBCardHeader>
-                        <MDBCardBody text="center">
-                            <form @submit.prevent="submit">
-                                <MDBRow>
-                                    <MDBCol class="col-12">
+                        <MDBCol md="12" class="mb-4 mb-md-0">
+                            <MDBCard class="mb-4">
+                                <MDBCardHeader class="py-3">
+                                    <strong>Crear Rol</strong>
+                                </MDBCardHeader>
+                                <MDBCardBody text="center">
+                                    <form @submit.prevent="submit">
 
-                                        <div class="form-group">
+                                        <div class="form-group pb-4">
                                             <MDBInput
                                                 type="text"
                                                 v-model="form.name"
                                                 label="Nombre"
-                                                wrapperClass="mb-4"
+                                                :class="{'is-invalid':form.errors.name}"
+                                                :invalid-feedback="form.errors.name"
                                             />
-                                            <div v-if="form.errors.name" class="invalid-feedback">
-                                                {{ form.errors.name }}
-                                            </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group pb-4">
                                             <MDBInput
                                                 type="text"
                                                 v-model="form.description"
                                                 label="Descripción "
-                                                wrapperClass="mb-4"
+                                                :class="{'is-invalid':form.errors.description}"
+                                                :invalid-feedback="form.errors.description"
                                             />
-
-                                            <div v-if="form.errors.description" class="invalid-feedback">
-                                                {{ form.errors.description }}
-                                            </div>
                                         </div>
 
-
-                                        <MDBBtn color="primary" class="mb-2" type="submit" :disabled="form.processing"> Guardar </MDBBtn>
-
-                                    </MDBCol>
-
-                                </MDBRow>
-                            </form>
-                        </MDBCardBody>
-                        </MDBCard>
-
-                    </MDBCol>
+                                        <MDBBtn
+                                          block
+                                          color="primary"
+                                          class="mb-2"
+                                          type="submit"
+                                          :disabled="form.processing"> Guardar </MDBBtn>
+                                    </form>
+                                </MDBCardBody>
+                            </MDBCard>
+                        </MDBCol>
                     </MDBRow>
                 </section>
                 <!--Section: Content-->
