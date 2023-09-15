@@ -90,47 +90,44 @@ const submit = () => {
                                             />
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group pb-3">
                                             <MDBInput
                                                 type="text"
                                                 v-model="form.name"
                                                 label="Nombre"
-                                                wrapperClass="mb-4"
+                                                :class="{'is-invalid':form.errors.name}"
+                                                :invalid-feedback="form.errors.name"
                                             />
-                                            <div v-if="form.errors.name" class="invalid-feedback">
-                                                {{ form.errors.name }}
-                                            </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group pb-3">
                                             <MDBInput
                                                 type="email"
                                                 v-model="form.email"
                                                 label="Correo"
-                                                wrapperClass="mb-4"
+                                                :class="{'is-invalid':form.errors.email}"
+                                                :invalid-feedback="form.errors.email"
                                             />
-
-                                            <div v-if="form.errors.email" class="invalid-feedback">
-                                                {{ form.errors.email }}
-                                            </div>
                                         </div>
 
-                                        <div class="form-group pb-4">
+                                        <div class="form-group pb-5">
                                             <MDBInput
                                                 type="password"
                                                 v-model="form.password"
                                                 label="Contraseña"
-                                                wrapperClass="mb-4"
                                                 aria-autocomplete="off"
                                                 helper="Escribir solo si deseas cambiar la contraseña"
+                                                :class="{'is-invalid':form.errors.name}"
+                                                :invalid-feedback="form.errors.name"
                                             />
-
-                                            <div v-if="form.errors.password" class="invalid-feedback">
-                                                {{ form.errors.password }}
-                                            </div>
                                         </div>
 
-                                        <MDBBtn color="primary" block class="mb-2" type="submit" :disabled="form.processing"> Guardar </MDBBtn>
+                                        <MDBBtn
+                                          color="primary"
+                                          block
+                                          class="mb-2"
+                                          type="submit"
+                                          :disabled="form.processing"> Guardar </MDBBtn>
 
                                     </MDBCol>
 
@@ -142,10 +139,7 @@ const submit = () => {
                                             <template v-for="(option,key) in checkedValues" :key="key">
                                                 <MDBCheckbox :label="option.label" :value="option.id" v-model="option.checked"/>
                                             </template>
-                                            <!-- <mdb-input v-for="option in options" type="checkbox" :id="option.label" v-model="option.checked" :key="option.id" :label="option.label" >{{option.checked}}</mdb-input> -->
                                         </div>
-
-
                                     </MDBCol>
                                 </MDBRow>
                             </form>

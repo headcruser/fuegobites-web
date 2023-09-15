@@ -50,8 +50,8 @@ const submit = () => {
 
 <template>
     <AuthenticatedLayout>
-        <div class="mt-4 mx-4">
-            <MDBContainer>
+        <div class="mt-3 mx-3">
+            <MDBContainer fluid>
                 <!--Section: Content-->
                 <section>
                     <MDBRow>
@@ -78,49 +78,45 @@ const submit = () => {
                                             />
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group pb-3">
                                             <MDBInput
                                                 type="text"
                                                 v-model="form.name"
                                                 label="Nombre"
-                                                wrapperClass="mb-4"
+                                                :class="{'is-invalid':form.errors.name}"
+                                                :invalid-feedback="form.errors.name"
                                                 autocomplete="off"
                                             />
-                                            <div v-if="form.errors.name" class="invalid-feedback">
-                                                {{ form.errors.name }}
-                                            </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group pb-3">
                                             <MDBInput
                                                 type="email"
                                                 v-model="form.email"
                                                 label="Correo"
                                                 autocomplete="off"
-                                                wrapperClass="mb-4"
+                                                :class="{'is-invalid':form.errors.email}"
+                                                :invalid-feedback="form.errors.email"
                                             />
-
-                                            <div v-if="form.errors.email" class="invalid-feedback">
-                                                {{ form.errors.email }}
-                                            </div>
                                         </div>
 
-                                        <div class="form-group pb-4">
+                                        <div class="form-group pb-3">
                                             <MDBInput
                                                 type="password"
                                                 v-model="form.password"
                                                 label="Contraseña"
-                                                wrapperClass="mb-4"
                                                 autocomplete="off"
                                                 aria-autocomplete="off"
+                                                :class="{'is-invalid':form.errors.password}"
+                                                :invalid-feedback="form.errors.password"
                                             />
-
-                                            <div v-if="form.errors.password" class="invalid-feedback">
-                                                {{ form.errors.password }}
-                                            </div>
                                         </div>
 
-                                        <MDBBtn color="primary" class="btn-block" type="submit" :disabled="form.processing"> Guardar </MDBBtn>
+                                        <MDBBtn
+                                          color="primary"
+                                          class="btn-block"
+                                          type="submit"
+                                          :disabled="form.processing"> Guardar </MDBBtn>
 
                                     </MDBCol>
 

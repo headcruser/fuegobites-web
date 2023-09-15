@@ -58,9 +58,10 @@ class UsersController extends Controller
         $user->fill([
             'name'              => $request->input('name'),
             'email'             => $request->input('email'),
-            'password'          => Hash::make($request->input('password')),
             'email_verified_at' => date('Y-m-d'),
         ]);
+
+        $user->password = Hash::make($request->input('password'));
 
         $user->save();
 
