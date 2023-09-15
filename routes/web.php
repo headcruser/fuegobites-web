@@ -59,5 +59,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::name('ventas.')->prefix('ventas')->group(function () {
         Route::get('registro', [VentasController::class, 'index'])->name('registro.index');
         Route::post('registro', [VentasController::class, 'store'])->name('registro.store');
+        Route::put('registro/{venta}', [VentasController::class, 'update'])->name('registro.update');
+        Route::delete('registro/{venta}', [VentasController::class, 'destroy'])->name('registro.destroy');
     });
 });

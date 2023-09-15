@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('descripcion')->nullable();
             $table->dateTime('fecha');
             $table->dateTime('fecha_pago')->nullable();
-            $table->string('forma_pago')->index()->nullable();
+            $table->integer('cantidad')->default(0);
             $table->decimal('total', 16, 2)->default(0);
+            $table->string('forma_pago')->index()->nullable();
             $table->boolean('pagado')->index()->nullable();
             $table->timestamps();
         });

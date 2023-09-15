@@ -1,20 +1,17 @@
 <script setup>
-    import SideNav from "@/Components/SideNav.vue";
+import { MDBAlert, MDBContainer } from "mdb-vue-ui-kit";
+import SideNav from "@/Components/SideNav.vue";
 </script>
 
 <template>
     <SideNav />
     <!-- Page Content -->
     <main >
-        <div
-            v-if="$page.props.flash.message"
-            class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
-            role="alert"
-        >
-            <span class="font-medium">
-                {{ $page.props.flash.message }}
-            </span>
-        </div>
+        <MDBContainer fluid class="pt-3" v-if="$page.props.flash.message">
+            <MDBAlert color="success" :autohide="true" static dismiss>
+                <i class="fas fa-check-circle me-3"></i>  {{ $page.props.flash.message }}
+            </MDBAlert>
+        </MDBContainer>
         <slot />
     </main>
   </template>
