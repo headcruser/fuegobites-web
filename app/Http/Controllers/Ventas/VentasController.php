@@ -14,7 +14,7 @@ class VentasController extends Controller
     {
         $ventas = Venta::query()->where('pagado', 0)->get();
 
-        return Inertia::render('Ventas/Index', [
+        return Inertia::render('Ventas/RegistroVenta/Index', [
             'ventas' => $ventas
         ]);
     }

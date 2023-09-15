@@ -44,8 +44,6 @@ onMounted(() => {
 
 const modalAgregarPedido = ref(false);
 
-
-
 const form = useForm({
     nombre:'',
     descripcion:'',
@@ -67,7 +65,7 @@ const formEdit = useForm({
     total:'',
     cantidad: '',
     fecha: '',
-    forma_pago: [],
+    forma_pago: '',
     pagado:false,
     formas_pago:[
         {text: 'Efectivo',value:'Efectivo'},
@@ -338,7 +336,13 @@ const evtClickActualizar = () => {
 
 
 
-    <Sidebar v-model:visible="visibleRight" position="right" class="bg-white" style="width: 50rem;" >
+    <Sidebar
+      v-model:visible="visibleRight"
+      position="right"
+      class="bg-white"
+      :baseZIndex="-1"
+      style="width: 50rem;">
+
         <h4>Detalle del pedido</h4>
         <p class="text-muted">{{ formEdit.id }} - {{ formEdit.nombre }}</p>
 
@@ -473,3 +477,9 @@ const evtClickActualizar = () => {
     </Sidebar>
   </AuthenticatedLayout>
 </template>
+
+<style>
+    .datepicker-toggle-button{
+        right: 0;
+    }
+</style>
