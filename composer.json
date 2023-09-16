@@ -12,12 +12,12 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "spatie/laravel-permission": "^5.5",
+        "intervention/image": "^2.5",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.13",
         "fakerphp/faker": "^1.9.1",
-        "intervention/image": "^2.5",
         "laravel-lang/attributes": "^2.0",
         "laravel-lang/lang": "^12.2",
         "laravel-lang/publisher": "^14.4",
