@@ -41,5 +41,9 @@ import SideNav from "@/Components/SideNav.vue";
   #main-navbar {
     padding-left: 0 !important;
   }
+
+  .sidenav-backdrop{
+    z-index:1034;top:0;left:0;background-color:rgba(0,0,0,.1);position:fixed !important;width:100%;height:100%;opacity:1;background-color:rgba(0,0,0,.1)
+  }
   </style>
 

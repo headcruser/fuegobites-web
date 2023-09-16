@@ -9,6 +9,7 @@ import {
   MDBRow,
   MDBCol,
   MDBCardTitle,
+  MDBCardText,
 } from "mdb-vue-ui-kit";
 
 import { ref, watch } from "vue";

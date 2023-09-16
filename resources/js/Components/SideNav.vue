@@ -14,11 +14,17 @@ import {
 } from "mdb-vue-ui-kit";
 
 import { ref } from "vue";
+import { reactive } from "vue";
 
 import logotipo from '@/img/fuego-bites.png';
 import defaultImage from '@/img/default-image.png'
 
+import "primevue/resources/themes/bootstrap4-light-blue/theme.css";
+
 import NavLink from '@/Components/NavLink.vue';
+import MegaMenu from 'primevue/megamenu';
+import Menu from "primevue/menu";
+
 
 const sidenavMDB = ref(true);
 
@@ -31,6 +37,66 @@ const handleLinkClick = () => {
         sidenavMDB.value = false;
     }
 };
+
+const modelMenu = ref([
+    {
+        label: 'Administracion',
+        icon: 'fas fa-cog fa-fw me-3',
+        items: [
+            [
+                {
+                    items: [
+                        { label: 'Usuarios', icon:'fa fa-user',href: route('admin.users.index')},
+                        { label: 'Roles',icon:'fas fa-user-group',href: route('admin.roles.index')},
+                        { label: 'Permisos',icon:'fas fa-ruler',href: route('admin.perms.index')},
+                        { label: 'Productos' ,icon:'fas fa-boxes-stacked',href: route('admin.productos.index')},
+                    ]
+                },
+            ],
+        ]
+    },
+    {
+        label: 'Ventas',
+        icon: 'fas fa-cash-register fa-fw me-3',
+        items: [
+            [
+                {
+                    items: [
+                        { label: 'Registrar ventas', icon:'fa fa-user',href: route('ventas.registro.index')},
+                    ]
+                },
+            ],
+        ]
+    }
+]);
+
+const items = ref([
+    {
+        label: 'Administración',
+        items: [
+            { label: 'Usuarios', icon:'fa fa-user',href: route('admin.users.index') },
+            { label: 'Roles', icon: 'fas fa-user-group',href: route('admin.roles.index')},
+            { label: 'Permisos',icon:'fas fa-ruler',href: route('admin.perms.index')},
+            { label: 'Productos' ,icon:'fas fa-boxes-stacked',href: route('admin.productos.index')},
+        ],
+    },
+    {separator:true},
+    {
+        label: 'Ventas',
+        items: [
+            { label: 'Registro de ventas', icon:'fa fa-cash-register',href: route('ventas.registro.index') },
+        ],
+    },
+    {separator:true},
+    {
+        label: 'Opciones',
+        items: [
+            { label: 'Acerca de', icon:'fa fa-cash-register',href: route('about') },
+        ],
+    },
+]);
+
+
 </script>
 
 <template>
@@ -39,12 +105,14 @@ const handleLinkClick = () => {
         <!-- Sidenav-->
         <MDBSideNav v-model="sidenavMDB"
             id="sidenavMDB"
-            contentSelector="#page-content" :modeBreakpoint="1400"
+            tabindex="-1"
+            contentSelector="#page-content"
+            :modeBreakpoint="1400"
             :closeOnEsc="true">
             <div class="d-flex justify-content-center pb-4">
                 <a :href="route('dashboard')">
                     <img :src="logotipo"
-                        style="width: 10rem;height: 10rem;"
+                        style="width: 5rem;height: 5rem;"
                         alt="Fuego bites"
                         draggable="false" />
                 </a>
@@ -54,9 +122,31 @@ const handleLinkClick = () => {
                 <div class="font-medium text-base text-gray-800 mb-2">{{ $page.props.auth.user.name }}</div>
                 <div class="font-medium text-base text-gray-400 mb-2">{{ $page.props.auth.roles.join('') }}</div>
             </div>
+
+            <div class="d-flex pb-3">
+                <Menu :model="items" class="w-100 border-0">
+                    <template #item="{ label, item, props }">
+                    <a :href="item.href" v-bind="props.action">
+                        <span v-bind="props.icon" />
+                        <span v-bind="props.label">{{ label }}</span>
+                    </a>
+                </template>
+                </Menu>
+                <!-- <MegaMenu class="bg-white" :model="modelMenu" orientation="horizontal">
+                    <template #item="{ label, item, props, hasSubmenu }">
+                        <a :href="item.href" :target="item.target" v-bind="props.action" style="width: 100%;">
+                            <span v-bind="props.icon" />
+                            <span v-bind="props.label">{{ label }}</span>
+                            <span :class="[hasSubmenu && 'pi pi-fw pi-angle-down']" v-bind="props.submenuicon" />
+                        </a>
+                    </template>
+                </MegaMenu> -->
+            </div>
+<!--
             <MDBSideNavMenu accordion>
                 <MDBSideNavItem collapse icon="cog" title="Administración" :show="route().current('admin.*')" >
                     <MDBSideNavItem>
+
                         <NavLink :href="route('admin.users.index')" :active="route().current('admin.users.*')"
                             @click="handleLinkClick">
                             <span>Usuarios</span>
@@ -110,7 +200,7 @@ const handleLinkClick = () => {
                     </NavLink>
                 </MDBSideNavItem>
 
-            </MDBSideNavMenu>
+            </MDBSideNavMenu> -->
         </MDBSideNav>
         <!-- Sidenav-->
 
@@ -152,7 +242,7 @@ const handleLinkClick = () => {
 
 
 
-<style scoped>
+<style>
 .page-intro {
     background-size: cover;
     background-position-x: center;
@@ -167,5 +257,10 @@ const handleLinkClick = () => {
     #main-navbar {
         padding-left: 240px;
     }
+}
+
+.p-megamenu-root-list > .p-menuitem {
+    position: relative;
+    width: 100% !important;
 }
 </style>
