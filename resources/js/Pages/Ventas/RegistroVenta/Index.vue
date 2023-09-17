@@ -29,8 +29,12 @@ import Swal from "sweetalert2";
 import "primevue/resources/themes/bootstrap4-light-blue/theme.css";
 import Editor from 'primevue/editor';
 import Sidebar from 'primevue/sidebar';
+
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import Pagination from '@/Components/Pagination.vue';
+
 import { onBeforeMount } from "vue";
+import { reactive } from "vue";
 
 const props = defineProps({
     ventas: Object
@@ -66,10 +70,10 @@ const vFechaEntrega = {
 onBeforeMount(() => {
     moment.locale('es-mx', {
         calendar : {
-            lastDay : '[Ayer] DD/MMMM/YYYY',
-            sameDay : '[Hoy] DD/MMMM/YYYY',
-            nextDay : '[Mañana] DD/MMMM/YYYY',
-            lastWeek : '[Semana pasada] DD/MMMM/YYYY',
+            lastDay : '[Ayer] DD/MMM/YYYY',
+            sameDay : '[Hoy] DD/MMM/YYYY',
+            nextDay : '[Mañana] DD/MMM/YYYY',
+            lastWeek : '[Semana pasada] DD/MMM/YYYY',
             nextWeek : 'DD/MMMM/YYYY',
             sameElse : 'L'
         }
@@ -107,6 +111,29 @@ const formEdit = useForm({
 
 const visibleRight = ref(false);
 
+const selectFiltroPagado = reactive({
+    value : '',
+    options: [
+        {text:'Pagado',value:1},
+        {text:'Sin pagar',value:0}
+    ],
+    selected: computed(() => {
+        return selectFiltroPagado.options.filter(option => option['selected']).map(option => option.value)
+    })
+})
+
+
+const evtChangeFilter = async () => {
+    router.get(route("ventas.registro.index"),
+      {
+        pagado: selectFiltroPagado.selected,
+      },
+      {
+        preserveState: true,
+        replace: true,
+      }
+    );
+}
 
 const evtClickVenta = (venta) => {
     readEdit(venta);
@@ -156,6 +183,11 @@ const evtClickActualizar = () => {
 }
 
 const evtClickPagado = async (venta) => {
+
+    if (venta.pagado) {
+        return;
+    }
+
     const result = await Swal.fire({
         title: `¿Deseas marcar como el pedido como pagado?`,
         html: `Se pagará ${venta.total} a <strong>${venta.id} - ${venta.nombre}</strong>`,
@@ -219,38 +251,61 @@ const updateEdit = async () => {
                 </MDBListGroupItem>
             </MDBListGroup>
 
+            <div class="d-flex justify-content-between">
+                <p class="fw-lighter">{{ props.ventas.length }} Pedidos / {{ totalCantidad }} Unidades </p>
+                <div>
+                    <MDBSelect
+                        searchPlaceholder="Buscar"
+                        noResultsText="Sin Resultados"
+                        selectAllLabel="Seleccionar todos"
+                        label="Filtrar por"
+                        size="sm"
+                        class="col-12"
+                        :preselect="false"
+                        v-model:selected="selectFiltroPagado.value"
+                        v-model:options="selectFiltroPagado.options"
+                        multiple
+                        @change="evtChangeFilter"
+                    />
+                </div>
 
-            <p class="fw-lighter">{{ props.ventas.length }} Pedidos / {{ totalCantidad }} Unidades </p>
+            </div>
 
             <MDBListGroup light class="pb-3">
                 <MDBListGroupItem
-                    class="d-flex justify-content-between align-items-center"
-                    v-for="(venta)  in props.ventas"
+                    v-for="(venta)  in ventas.data"
                     :key="venta.id"
                     >
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex justify-content-between align-content-center" :class="{'text-decoration-line-through':venta.pagado}">
+                        <div class="d-flex align-items-center">
+                            <div class="text-center" style="min-width: 3rem;">
+                                <i
+                                  class="fa-lg fas fa-trash-alt me-2 text-danger"
+                                  title="Eliminar"
+                                  @click="evtClickEliminar(venta)"
+                                  ></i>
+                                <i
+                                  class="fa-lg"
+                                  :class="{'far fa-circle':!venta.pagado ,'fa fa-circle-check text-success' : venta.pagado}"
+                                  @click="evtClickPagado(venta)"
+                                  ></i>
+                            </div>
+                            <div class="ms-3" @click="evtClickVenta(venta)">
+
+                                <p class="fw-bold mb-1">{{ venta.id }} <i class="fas fa-long-arrow-alt-right"></i> {{ venta.nombre }}</p>
+                                <p class="text-muted mb-0" v-fecha-entrega="venta"></p>
+                            </div>
+                        </div>
+
                         <div>
-                            <i
-                              class="fa-lg fas fa-trash-alt me-2 text-danger"
-                              title="Eliminar"
-                              @click="evtClickEliminar(venta)"
-                              ></i>
-                            <i
-                              class="fa-lg"
-                              :class="{'far fa-circle':!venta.pagado ,'fa fa-circle-check' : venta.pagado}"
-                              @click="evtClickPagado(venta)"
-                              ></i>
-                        </div>
-                        <div class="ms-3" @click="evtClickVenta(venta)">
-                            <p class="fw-bold mb-1">{{ venta.id }} <i class="fas fa-long-arrow-alt-right"></i> {{ venta.nombre }}</p>
-                            <p class="text-muted mb-0" v-fecha-entrega="venta"></p>
+                            <small class="fw-bolder text-nowrap">$  {{ venta.total }}</small>
                         </div>
                     </div>
-                    <div>
-                        <small class="fw-bolder">$  {{ venta.total }}</small>
-                    </div>
+
                 </MDBListGroupItem>
             </MDBListGroup>
+
+            <Pagination class="mt-6" :links="ventas.links" />
         </section>
 
     </div>
@@ -281,7 +336,7 @@ const updateEdit = async () => {
 
 
             <MDBRow class="mb-4">
-                <MDBCol col="12" lg="6">
+                <MDBCol col="12" lg="6" class="pb-4 pb-lg-0">
                     <div class="form-group">
                         <MDBInput
                             type="number"
@@ -294,6 +349,7 @@ const updateEdit = async () => {
                         />
                     </div>
                 </MDBCol>
+
                 <MDBCol col="12" lg="6">
                     <div class="form-group">
                         <MDBInput
@@ -424,7 +480,7 @@ const updateEdit = async () => {
         </div>
 
         <MDBRow class="mb-3">
-            <MDBCol col="12" lg="6">
+            <MDBCol col="12" lg="6" class="pb-4 pb-lg-0">
                 <div class="form-group">
                     <MDBInput
                         type="number"

@@ -12,10 +12,17 @@ class VentasController extends Controller
 {
     public function index(Request $request)
     {
-        $ventas = Venta::query()->where('pagado', 0)->get();
+        $ventas = Venta::query()
+            ->when($request->input('pagado'), function ($q, $value) {
+                $q->whereIn('pagado', $value);
+            }, function ($q) {
+                $q->where('pagado', 0);
+            })
+            ->paginate(25);
 
         return Inertia::render('Ventas/RegistroVenta/Index', [
-            'ventas' => $ventas
+            'ventas' => $ventas,
+            'filters'   => $request->only(['pagado']),
         ]);
     }
 
