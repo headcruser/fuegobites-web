@@ -49,9 +49,9 @@ const selectPago = computed(() => {
     return Object.entries(FORMAS_PAGO).map( ([key,forma]) => ({text: forma,value:forma}));
 })
 
-const totalPedidos = computed(() =>  Intl.NumberFormat().format(_.sumBy(props.ventas,(venta) => Number(venta.total)) ))
+const totalPedidos = computed(() =>  Intl.NumberFormat().format(_.sumBy(props.ventas.data,(venta) => Number(venta.total)) ))
 
-const totalCantidad = computed(() =>  Intl.NumberFormat().format(_.sumBy(props.ventas,(venta) => Number(venta.cantidad)) ))
+const totalCantidad = computed(() =>  Intl.NumberFormat().format(_.sumBy(props.ventas.data,(venta) => Number(venta.cantidad)) ))
 
 const vFechaEntrega = {
     beforeMount: (el,venta) => {
@@ -252,7 +252,7 @@ const updateEdit = async () => {
             </MDBListGroup>
 
             <div class="d-flex justify-content-between">
-                <p class="fw-lighter">{{ props.ventas.length }} Pedidos / {{ totalCantidad }} Unidades </p>
+                <p class="fw-lighter">{{ props.ventas.data.length }} Pedidos / {{ totalCantidad }} Unidades </p>
                 <div>
                     <MDBSelect
                         searchPlaceholder="Buscar"
