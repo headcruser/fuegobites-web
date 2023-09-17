@@ -91,7 +91,7 @@ const items = ref([
     {
         label: 'Opciones',
         items: [
-            { label: 'Acerca de', icon:'fa fa-cash-register',href: route('about') },
+            { label: 'Acerca de', icon:'fa fa-info-circle', href: route('about') },
         ],
     },
 ]);
