@@ -1,17 +1,15 @@
 <script setup>
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import { Link } from '@inertiajs/vue3'
+
 import {
-  MDBContainer,
-  MDBRow,
-  MDBBtn,
-
-  MDBCard,
-  MDBCardBody,
-
-  MDBCol,
-  MDBCheckbox,
+    MDBContainer,
+    MDBRow,
+    MDBCol,
+    MDBCard,
+    MDBCardBody,
 } from "mdb-vue-ui-kit";
+
+import { Link } from '@inertiajs/vue3'
 </script>
 
 <template>
@@ -20,10 +18,10 @@ import {
     <MDBRow class="d-flex justify-content-center">
       <MDBCol md="6">
         <MDBCard>
-          <MDBCardBody class="p-4">
-            <div class="flex flex-col sm:justify-center items-center mb-4">
-                <Link href="/">
-                    <ApplicationLogo class="w-20 h-20 fill-current text-gray-500" />
+          <MDBCardBody>
+            <div class="pb-4 text-center">
+                <Link href="/" >
+                    <ApplicationLogo />
                 </Link>
             </div>
 

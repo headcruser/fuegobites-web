@@ -192,10 +192,6 @@ const readEdit = (venta) => {
 }
 
 const updateEdit = async () => {
-    // formEdit.transform((data) => ({
-    //     ...data,
-    // }));
-
     formEdit.put(route('ventas.registro.update',formEdit.id),{
         preserveScroll: true,
         onSuccess: () => {
@@ -204,7 +200,6 @@ const updateEdit = async () => {
         },
     });
 }
-
 </script>
 
 <template>

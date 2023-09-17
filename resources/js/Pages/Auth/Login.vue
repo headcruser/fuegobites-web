@@ -27,13 +27,11 @@ const submit = () => {
 const f_ShowPassword = () => {
   vVisiblePassword.value = !vVisiblePassword.value;
 }
-
-console.log(form);
 </script>
 
 <template>
   <GuestLayout>
-    <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+    <div v-if="status" class="mb-4">
         {{ status }}
     </div>
 
@@ -69,6 +67,7 @@ console.log(form);
                         }"
                         :helper="form.errors.password"
                         label="Contraseña"
+                        autocomplete="current-password"
                         required
                     />
                     <div>
