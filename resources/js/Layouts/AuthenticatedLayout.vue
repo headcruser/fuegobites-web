@@ -8,7 +8,7 @@ import SideNav from "@/Components/SideNav.vue";
     <!-- Page Content -->
     <main >
         <MDBContainer fluid class="pt-3" v-if="$page.props.flash.message">
-            <MDBAlert color="success" :autohide="true" static dismiss>
+            <MDBAlert color="success" :autohide="true" static>
                 <i class="fas fa-check-circle me-3"></i>  {{ $page.props.flash.message }}
             </MDBAlert>
         </MDBContainer>

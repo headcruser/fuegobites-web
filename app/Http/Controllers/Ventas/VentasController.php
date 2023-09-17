@@ -25,11 +25,9 @@ class VentasController extends Controller
             'nombre'        => 'required',
             'total'         => 'numeric',
             'cantidad'      => 'numeric',
-            'forma_pago'    => 'required',
             'fecha'         => 'date_format:d/m/Y',
             'descripcion'   => 'nullable',
         ]);
-
 
         $venta = new Venta();
 
@@ -40,7 +38,7 @@ class VentasController extends Controller
             'total'         => $request->input('total'),
             'cantidad'      => $request->input('cantidad'),
             'pagado'        => $request->input('pagado'),
-            'forma_pago'    => $request->input('forma_pago'),
+            'forma_pago'    => $request->input('pagado') ? $request->input('forma_pago') : null,
             'fecha_pago'    => $request->input('pagado') ? now() : null
         ]);
 

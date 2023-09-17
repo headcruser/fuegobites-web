@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('descripcion')->nullable();
             $table->decimal('precio', 16, 2)->nullable();
             $table->binary('imagen')->nullable();
+            $table->boolean('preparado')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

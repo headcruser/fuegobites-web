@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('precio', 16, 2)->default(0);
             $table->decimal('total', 16, 2)->default(0);
             $table->boolean('pagado')->default(false);
+            $table->boolean('completado')->default(false);
             $table->timestamps();
 
             $table->foreign('id_venta')

@@ -84,7 +84,7 @@ const items = ref([
     {
         label: 'Ventas',
         items: [
-            { label: 'Registro de ventas', icon:'fa fa-cash-register',href: route('ventas.registro.index') },
+            { label: 'Registro', icon:'fa fa-cash-register',href: route('ventas.registro.index') },
         ],
     },
     {separator:true},

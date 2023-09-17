@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('cantidad')->default(0);
             $table->decimal('total', 16, 2)->default(0);
             $table->string('forma_pago')->index()->nullable();
-            $table->boolean('pagado')->index()->nullable();
+            $table->boolean('pagado')->nullable();
             $table->timestamps();
         });
     }
