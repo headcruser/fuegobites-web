@@ -1,8 +1,9 @@
 <script setup>
 import { computed } from 'vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { MDBBtn } from 'mdb-vue-ui-kit';
 
 const props = defineProps({
     status: String,
@@ -31,11 +32,18 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
 
         <form @submit.prevent="submit">
             <div class="mt-4 flex items-center justify-between">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Resend Verification Email
-                </PrimaryButton>
+                <MDBBtn
+                    color="primary"
+                    type="submit"
+                    block
+                    class="mb-4"
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
+                >
+                    Reenviar email de verificación
+                </MDBBtn>
 
-                <Link :href="route('logout')" method="post" as="button" class="underline text-sm text-gray-600 hover:text-gray-900">Log Out</Link>
+                <Link :href="route('logout')" method="post" as="button" >Log Out</Link>
             </div>
         </form>
     </GuestLayout>
