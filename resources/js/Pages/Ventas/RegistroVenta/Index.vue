@@ -77,7 +77,7 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
-    form.fecha = moment().format('DD/MM/YYYY');
+    // form.fecha = moment().format('DD/MM/YYYY');
 })
 
 const modalAgregarPedido = ref(false);
@@ -220,7 +220,13 @@ const readEdit = (venta) => {
 }
 
 const updateEdit = async () => {
-    formEdit.put(route('ventas.registro.update',formEdit.id),{
+
+    formEdit.transform((data) => ({
+        ...data,
+        _method: 'put',
+    }))
+
+    formEdit.post(route('ventas.registro.update',formEdit.id),{
         preserveScroll: true,
         onSuccess: () => {
             formEdit.reset();
@@ -288,13 +294,14 @@ const updateEdit = async () => {
                             </div>
                             <div class="ms-3" @click="evtClickVenta(venta)">
 
-                                <p class="fw-bold mb-1">{{ venta.id }} <i class="fas fa-long-arrow-alt-right"></i> {{ venta.nombre }}</p>
+                                <p class="fw-bold mb-1 text-uppercase">{{ venta.nombre }} </p>
                                 <p class="text-muted mb-0" v-fecha-entrega="venta"></p>
                             </div>
                         </div>
 
-                        <div>
+                        <div class="me-2 text-end">
                             <small class="fw-bolder text-nowrap">$  {{ venta.total }}</small>
+                            <div class="text-nowrap">Total {{ venta.cantidad }}</div>
                         </div>
                     </div>
 
@@ -449,8 +456,6 @@ const updateEdit = async () => {
             <MDBBtn color="primary" @click="evtClickRegistrar"  :disabled="form.processing">Registrar</MDBBtn>
         </MDBModalFooter>
     </MDBModal>
-
-
 
     <Sidebar
       v-model:visible="visibleRight"
