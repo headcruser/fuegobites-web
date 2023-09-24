@@ -24,6 +24,7 @@ class VentaDetalle extends Model
      */
     protected $fillable = [
         'id_venta',
+        'id_producto',
         'nombre',
         'descripcion',
         'cantidad',
@@ -34,6 +35,11 @@ class VentaDetalle extends Model
 
     public function venta(): BelongsTo
     {
-        return $this->belongsTo(Venta::class, 'id_venta', 'id');
+        return $this->belongsTo(Venta::class, 'id_venta', 'id')->withDefault();
+    }
+
+    public function producto(): BelongsTo
+    {
+        return $this->belongsTo(Producto::class, 'id_producto', 'id')->withDefault();
     }
 }

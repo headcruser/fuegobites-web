@@ -21,5 +21,8 @@ class Producto extends Model
         'codigo',
         'descripcion',
         'precio',
+
+        # imagen
+        # preparado
     ];
 }

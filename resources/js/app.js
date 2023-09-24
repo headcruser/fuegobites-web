@@ -41,6 +41,7 @@ import Permissions from './Plugins/Permissions';
 import VueGates from 'vue-gates';
 
 import PrimeVue from 'primevue/config';
+import { configPrimeVue } from './Config/primevue'
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
@@ -57,7 +58,7 @@ createInertiaApp({
             .use(Permissions)
             .use(ZiggyVue, Ziggy)
             .use(VueSweetalert2)
-            .use(PrimeVue)
+            .use(PrimeVue,configPrimeVue)
             .mount(el);
     },
 });
