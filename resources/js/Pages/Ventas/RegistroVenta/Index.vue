@@ -240,6 +240,17 @@ const readEdit = (venta) => {
     formEdit.fecha = moment(venta.fecha).format('DD/MM/YYYY');
     formEdit.pagado = venta.pagado;
     formEdit.forma_pago = venta.forma_pago;
+
+    if(venta.pagado) {
+        const findFormaPago = formEdit.formas_pago.find( option => option['value'] == venta.forma_pago);
+
+        if (findFormaPago) {
+            findFormaPago['selected'] = true;
+        }
+    } else {
+        formEdit.formas_pago.forEach( option => option['selected'] = false);
+    }
+
     formEdit.productos_options = [...selectProductos.value];
 
     formEdit.detalles_ventas = venta.detalles.map(detalle => {
