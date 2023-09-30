@@ -192,6 +192,7 @@ const evtClickRegistrar = () => {
         preserveScroll: true,
         onSuccess: () => {
             form.reset();
+            form.productos_options = [...selectProductos.value];
             modalAgregarPedido.value = false;
         },
     });
