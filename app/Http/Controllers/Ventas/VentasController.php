@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Ventas;
 
-use Carbon\Carbon;
-use Inertia\Inertia;
-use App\Models\Venta;
+use App\Http\Controllers\Controller;
 use App\Models\Producto;
+use App\Models\Venta;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 
 class VentasController extends Controller
 {
@@ -23,6 +23,8 @@ class VentasController extends Controller
             })
             ->with(['detalles.producto'])
             ->paginate(25);
+
+        $ventas->appends($request->all());
 
         $productos = Producto::toBase()->select(['id', 'nombre', 'codigo', 'descripcion', 'precio', 'imagen'])->get();
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ProductosController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\Ventas\PedidosController;
 use App\Http\Controllers\Ventas\VentasController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -61,5 +62,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('registro', [VentasController::class, 'store'])->name('registro.store');
         Route::put('registro/{venta}', [VentasController::class, 'update'])->name('registro.update');
         Route::delete('registro/{venta}', [VentasController::class, 'destroy'])->name('registro.destroy');
+
+        Route::name('pedidos.')->prefix('pedidos')->group(function () {
+            Route::get('/', [PedidosController::class, 'index'])->name('index');
+        });
     });
 });

@@ -38,37 +38,37 @@ const handleLinkClick = () => {
     }
 };
 
-const modelMenu = ref([
-    {
-        label: 'Administracion',
-        icon: 'fas fa-cog fa-fw me-3',
-        items: [
-            [
-                {
-                    items: [
-                        { label: 'Usuarios', icon:'fa fa-user',href: route('admin.users.index')},
-                        { label: 'Roles',icon:'fas fa-user-group',href: route('admin.roles.index')},
-                        { label: 'Permisos',icon:'fas fa-ruler',href: route('admin.perms.index')},
-                        { label: 'Productos' ,icon:'fas fa-boxes-stacked',href: route('admin.productos.index')},
-                    ]
-                },
-            ],
-        ]
-    },
-    {
-        label: 'Ventas',
-        icon: 'fas fa-cash-register fa-fw me-3',
-        items: [
-            [
-                {
-                    items: [
-                        { label: 'Registrar ventas', icon:'fa fa-user',href: route('ventas.registro.index')},
-                    ]
-                },
-            ],
-        ]
-    }
-]);
+// const modelMenu = ref([
+//     {
+//         label: 'Administracion',
+//         icon: 'fas fa-cog fa-fw me-3',
+//         items: [
+//             [
+//                 {
+//                     items: [
+//                         { label: 'Usuarios', icon:'fa fa-user',href: route('admin.users.index')},
+//                         { label: 'Roles',icon:'fas fa-user-group',href: route('admin.roles.index')},
+//                         { label: 'Permisos',icon:'fas fa-ruler',href: route('admin.perms.index')},
+//                         { label: 'Productos' ,icon:'fas fa-boxes-stacked',href: route('admin.productos.index')},
+//                     ]
+//                 },
+//             ],
+//         ]
+//     },
+//     {
+//         label: 'Ventas',
+//         icon: 'fas fa-cash-register fa-fw me-3',
+//         items: [
+//             [
+//                 {
+//                     items: [
+//                         { label: 'Registrar ventas', icon:'fa fa-user',href: route('ventas.registro.index')},
+//                     ]
+//                 },
+//             ],
+//         ]
+//     }
+// ]);
 
 const items = ref([
     {
@@ -85,6 +85,7 @@ const items = ref([
         label: 'Ventas',
         items: [
             { label: 'Registro', icon:'fa fa-cash-register',href: route('ventas.registro.index') },
+            { label: 'Pedidos', icon:'fa fa-list-check',href: route('ventas.pedidos.index') },
         ],
     },
     {separator:true},

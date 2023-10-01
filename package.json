@@ -19,6 +19,8 @@
     },
     "dependencies": {
         "@inertiajs/vue3": "^1.0.7",
+        "@vueuse/core": "^10.4.1",
+        "clipboard": "^2.0.11",
         "mdb-vue-calendar": "./resources/mdb/plugins/mdb-vue-calendar-3.0.1.tgz",
         "mdb-vue-captcha": "./resources/mdb/plugins/mdb-vue-captcha-2.0.1.tgz",
         "mdb-vue-color-picker": "./resources/mdb/plugins/mdb-vue-color-picker-2.0.1.tgz",

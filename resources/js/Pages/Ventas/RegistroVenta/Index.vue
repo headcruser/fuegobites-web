@@ -22,6 +22,9 @@ import 'moment/dist/locale/es-mx'
 
 import Swal from "sweetalert2";
 
+
+import vFechaEntrega from '@/Directives/Calendar'
+
 import "primevue/resources/themes/bootstrap4-light-blue/theme.css";
 import Sidebar from 'primevue/sidebar';
 
@@ -57,24 +60,6 @@ const selectProductos = computed(() => {
         }
     })
 })
-
-
-const formatCalendar = (el,venta) => {
-    const fecha = moment(venta.value.fecha);
-    const fechaActual = moment();
-
-    el.innerHTML = `Entrega ${fecha.calendar()} `
-
-    if (fecha.isBefore(fechaActual)) {
-        el.classList.remove('text-muted');
-        el.classList.add('text-danger');
-    }
-}
-
-const vFechaEntrega = {
-    beforeMount: formatCalendar,
-    updated: formatCalendar,
-}
 
 onBeforeMount(() => {
     moment.locale('es-mx', {
@@ -303,7 +288,7 @@ const updateEdit = async () => {
             </MDBListGroup>
 
             <div class="d-flex justify-content-between">
-                <p class="fw-lighter">{{ props.ventas.data.length }} Pedidos / {{ Intl.NumberFormat().format(_.sumBy(props.ventas.data,(venta) => Number(venta.cantidad)) ) }} Unidades </p>
+                <p class="fw-lighter">{{ props.ventas.total }} Pedidos / {{ Intl.NumberFormat().format(_.sumBy(props.ventas.data,(venta) => Number(venta.cantidad)) ) }} Unidades </p>
                 <div>
                     <MDBSelect
                         searchPlaceholder="Buscar"
@@ -344,7 +329,7 @@ const updateEdit = async () => {
                             <div class="ms-3" @click="evtClickVenta(venta)">
 
                                 <p class="fw-bold mb-1 text-uppercase">{{ venta.nombre }} </p>
-                                <p class="text-muted mb-0" v-fecha-entrega="venta"></p>
+                                <p class="mb-0" v-fecha-entrega="venta"></p>
                             </div>
                         </div>
 
