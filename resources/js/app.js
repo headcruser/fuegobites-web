@@ -43,7 +43,7 @@ import VueGates from 'vue-gates';
 import PrimeVue from 'primevue/config';
 import { configPrimeVue } from './Config/primevue'
 
-const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
+const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Fuego Bites';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

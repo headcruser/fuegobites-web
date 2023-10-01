@@ -1,20 +1,18 @@
 <script setup>
 import {
-    MDBSideNav,
-    MDBSideNavMenu,
-    MDBSideNavItem,
-    MDBIcon,
-    MDBNavbar,
-    MDBNavbarNav,
-    MDBNavbarToggler,
-    MDBDropdown,
-    MDBDropdownToggle,
-    MDBDropdownMenu,
-
+MDBSideNav,
+MDBSideNavMenu,
+MDBSideNavItem,
+MDBIcon,
+MDBNavbar,
+MDBNavbarNav,
+MDBNavbarToggler,
+MDBDropdown,
+MDBDropdownToggle,
+MDBDropdownMenu,
 } from "mdb-vue-ui-kit";
 
-import { ref } from "vue";
-import { reactive } from "vue";
+import { computed, ref } from "vue";
 
 import logotipo from '@/img/fuego-bites.png';
 import defaultImage from '@/img/default-image.png'
@@ -22,9 +20,17 @@ import defaultImage from '@/img/default-image.png'
 import "primevue/resources/themes/bootstrap4-light-blue/theme.css";
 
 import NavLink from '@/Components/NavLink.vue';
-import MegaMenu from 'primevue/megamenu';
-import Menu from "primevue/menu";
+import { usePage } from "@inertiajs/vue3";
 
+const userAuth = computed(() =>  usePage().props.auth.user);
+
+const userImageProfile = computed(() => {
+    return userAuth.value?.photo
+        ? `/storage/users/${userAuth.value.id}/${userAuth.value.photo}`
+        : defaultImage
+})
+
+const userPermissions = computed(() => Object.values(usePage().props.auth.permissions));
 
 const sidenavMDB = ref(true);
 
@@ -36,68 +42,7 @@ const handleLinkClick = () => {
     if (windowWidth < 1400) {
         sidenavMDB.value = false;
     }
-};
-
-// const modelMenu = ref([
-//     {
-//         label: 'Administracion',
-//         icon: 'fas fa-cog fa-fw me-3',
-//         items: [
-//             [
-//                 {
-//                     items: [
-//                         { label: 'Usuarios', icon:'fa fa-user',href: route('admin.users.index')},
-//                         { label: 'Roles',icon:'fas fa-user-group',href: route('admin.roles.index')},
-//                         { label: 'Permisos',icon:'fas fa-ruler',href: route('admin.perms.index')},
-//                         { label: 'Productos' ,icon:'fas fa-boxes-stacked',href: route('admin.productos.index')},
-//                     ]
-//                 },
-//             ],
-//         ]
-//     },
-//     {
-//         label: 'Ventas',
-//         icon: 'fas fa-cash-register fa-fw me-3',
-//         items: [
-//             [
-//                 {
-//                     items: [
-//                         { label: 'Registrar ventas', icon:'fa fa-user',href: route('ventas.registro.index')},
-//                     ]
-//                 },
-//             ],
-//         ]
-//     }
-// ]);
-
-const items = ref([
-    {
-        label: 'Administración',
-        items: [
-            { label: 'Usuarios', icon:'fa fa-user',href: route('admin.users.index') },
-            { label: 'Roles', icon: 'fas fa-user-group',href: route('admin.roles.index')},
-            { label: 'Permisos',icon:'fas fa-ruler',href: route('admin.perms.index')},
-            { label: 'Productos' ,icon:'fas fa-boxes-stacked',href: route('admin.productos.index')},
-        ],
-    },
-    {separator:true},
-    {
-        label: 'Ventas',
-        items: [
-            { label: 'Registro', icon:'fa fa-cash-register',href: route('ventas.registro.index') },
-            { label: 'Pedidos', icon:'fa fa-list-check',href: route('ventas.pedidos.index') },
-        ],
-    },
-    {separator:true},
-    {
-        label: 'Opciones',
-        items: [
-            { label: 'Acerca de', icon:'fa fa-info-circle', href: route('about') },
-        ],
-    },
-]);
-
-
+}
 </script>
 
 <template>
@@ -120,45 +65,29 @@ const items = ref([
             </div>
 
             <div class="px-4 mb-2 text-center border-bottom">
-                <div class="font-medium text-base text-gray-800 mb-2">{{ $page.props.auth.user.name }}</div>
-                <div class="font-medium text-base text-gray-400 mb-2">{{ $page.props.auth.roles.join('') }}</div>
+                <div class="mb-2 text-muted">{{ userAuth.name }}</div>
+                <div class="fw-bold mb-2 text-capitalize">{{ $page.props.auth.roles.join('') }}</div>
             </div>
 
-            <div class="d-flex pb-3">
-                <Menu :model="items" class="w-100 border-0">
-                    <template #item="{ label, item, props }">
-                    <a :href="item.href" v-bind="props.action">
-                        <span v-bind="props.icon" />
-                        <span v-bind="props.label">{{ label }}</span>
-                    </a>
-                </template>
-                </Menu>
-                <!-- <MegaMenu class="bg-white" :model="modelMenu" orientation="horizontal">
-                    <template #item="{ label, item, props, hasSubmenu }">
-                        <a :href="item.href" :target="item.target" v-bind="props.action" style="width: 100%;">
-                            <span v-bind="props.icon" />
-                            <span v-bind="props.label">{{ label }}</span>
-                            <span :class="[hasSubmenu && 'pi pi-fw pi-angle-down']" v-bind="props.submenuicon" />
-                        </a>
-                    </template>
-                </MegaMenu> -->
-            </div>
-<!--
+
             <MDBSideNavMenu accordion>
-                <MDBSideNavItem collapse icon="cog" title="Administración" :show="route().current('admin.*')" >
+                <MDBSideNavItem collapse icon="cog" title="Administración" :show="route().current('admin.*')">
                     <MDBSideNavItem>
 
                         <NavLink :href="route('admin.users.index')" :active="route().current('admin.users.*')"
+                            v-if="userPermissions.includes('gestionar_usuarios')"
                             @click="handleLinkClick">
                             <span>Usuarios</span>
                         </NavLink>
 
                         <NavLink :href="route('admin.roles.index')" :active="route().current('admin.roles.*')"
+                            v-if="userPermissions.includes('gestionar_roles')"
                             @click="handleLinkClick">
                             <span>Roles</span>
                         </NavLink>
 
                         <NavLink :href="route('admin.perms.index')" :active="route().current('admin.perms.*')"
+                            v-if="userPermissions.includes('gestionar_permisos')"
                             @click="handleLinkClick">
                             <span>Permisos</span>
                         </NavLink>
@@ -172,15 +101,26 @@ const items = ref([
 
 
                 <MDBSideNavItem collapse
-                    :show="route().current('ventas.registro.*')"
+                    :show="route().current('ventas.*')"
+                    tag="div"
                     icon="cash-register"
                     title="Ventas">
+
                     <MDBSideNavItem>
                         <NavLink
                             :href="route('ventas.registro.index')"
                             :active="route().current('ventas.registro.*')"
                             @click="handleLinkClick">
                             <span>Registrar ventas</span>
+                        </NavLink>
+                    </MDBSideNavItem>
+
+                    <MDBSideNavItem>
+                        <NavLink
+                            :href="route('ventas.pedidos.index')"
+                            :active="route().current('ventas.pedidos.*')"
+                            @click="handleLinkClick">
+                            <span>Pedidos</span>
                         </NavLink>
                     </MDBSideNavItem>
                 </MDBSideNavItem>
@@ -193,32 +133,23 @@ const items = ref([
                         <span>Acerca de </span>
                     </NavLink>
                 </MDBSideNavItem>
-
-                <MDBSideNavItem>
-                    <NavLink :href="route('logout')" method="post" title="Cerrar sesión" @click="handleLinkClick">
-                        <MDBIcon icon="arrow-right-from-bracket" class="me-3"></MDBIcon>
-                        <span>Cerrar sesión</span>
-                    </NavLink>
-                </MDBSideNavItem>
-
-            </MDBSideNavMenu> -->
+            </MDBSideNavMenu>
         </MDBSideNav>
         <!-- Sidenav-->
 
         <!-- Navbar-->
-        <MDBNavbar expand="lg" light bg="light" container id="main-navbar">
+        <MDBNavbar expand="lg" light bg="light" container id="main-navbar" >
             <!-- Toggler -->
             <MDBNavbarToggler @click="sidenavMDB = !sidenavMDB" target="#sidenavMDB">
                 <MDBIcon icon="bars" />
             </MDBNavbarToggler>
-
 
             <!-- Right links -->
             <MDBNavbarNav right class="d-flex flex-row">
                 <MDBDropdown v-model="dropdown3" class="nav-item me-3 me-lg-0">
                     <MDBDropdownToggle tag="a" class="nav-link" @click="dropdown3 = !dropdown3">
                         <img
-                          :src="$page.props.auth.user?.photo ? `/storage/users/${$page.props.auth.user.id}/${$page.props.auth.user.photo}`: defaultImage"
+                          :src="userImageProfile"
                           class="rounded-circle"
                           style="width: 25px;"
                           loading="lazy" />
@@ -240,8 +171,6 @@ const items = ref([
     </header>
     <!-- Main navigation -->
 </template>
-
-
 
 <style>
 .page-intro {

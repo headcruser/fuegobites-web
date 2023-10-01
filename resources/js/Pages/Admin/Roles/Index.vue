@@ -90,58 +90,64 @@ const destroy = async (role)  => {
                     <h4 class="mb-0">Roles</h4>
                 </MDBCardHeader>
             <MDBCardBody>
-                <div class="d-flex justify-content-end mb-4">
-                    <div class="form-outline">
-                        <MDBInput v-model="search" label="Buscar"/>
-                    </div>
+                <div class="d-flex justify-content-end mb-2">
+                    <div class="d-flex">
+                        <div class="form-outline">
+                            <MDBInput v-model="search" label="Buscar"/>
+                        </div>
 
-                    <Link
-                        as="button"
-                        type="button"
-                        className="btn btn-primary btn-sm ms-3 ripple-surface"
-                        :href="route('admin.roles.create')"
-                    >
-                        <MDBIcon icon="plus"></MDBIcon>
-                    </Link>
+                        <Link
+                            as="button"
+                            type="button"
+                            className="btn btn-primary btn-sm ms-3 ripple-surface"
+                            :href="route('admin.roles.create')"
+                        >
+                            <MDBIcon icon="plus"></MDBIcon>
+                        </Link>
+                    </div>
                 </div>
 
-                <MDBTable>
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Descripcion</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="role in roles.data" :key="role.id">
-                            <td>{{ role.id }}</td>
-                            <td>{{ role.name }}</td>
-                            <td>{{ role.description }}</td>
-                            <td>
-                                <Link
-                                    tabIndex="1"
-                                    className="btn btn-small btn-outline-primary btn-floating ripple-surface"
-                                    as="button"
-                                    :href="route('admin.roles.edit', role.id)"
-                                >
-                                    <MDBIcon icon="pencil"></MDBIcon>
-                                </Link>
+                <hr>
 
-                                <MDBBtn outline="danger"
-                                    title="Eliminar"
-                                    size="small"
-                                    floating
-                                    :disabled="role.name.includes('administrador')"
-                                    @click="destroy(role)"
-                                >
-                                    <MDBIcon  icon="trash"></MDBIcon>
-                                </MDBBtn>
-                            </td>
-                        </tr>
-                    </tbody>
-                </MDBTable>
+                <div class="table-responsive">
+                    <MDBTable>
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Descripcion</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="role in roles.data" :key="role.id">
+                                <td>{{ role.id }}</td>
+                                <td>{{ role.name }}</td>
+                                <td>{{ role.description }}</td>
+                                <td class="text-nowrap">
+                                    <Link
+                                        tabIndex="1"
+                                        className="btn btn-small btn-outline-primary btn-floating ripple-surface"
+                                        as="button"
+                                        :href="route('admin.roles.edit', role.id)"
+                                    >
+                                        <MDBIcon icon="pencil"></MDBIcon>
+                                    </Link>
+
+                                    <MDBBtn outline="danger"
+                                        title="Eliminar"
+                                        size="small"
+                                        floating
+                                        :disabled="role.name.includes('administrador')"
+                                        @click="destroy(role)"
+                                    >
+                                        <MDBIcon  icon="trash"></MDBIcon>
+                                    </MDBBtn>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </MDBTable>
+                </div>
 
                 <Pagination class="mt-6" :links="roles.links" />
 
