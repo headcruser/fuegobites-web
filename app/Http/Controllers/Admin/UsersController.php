@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:gestionar_usuarios']);
+    }
+
     public function index(Request $request)
     {
         $users = User::query()

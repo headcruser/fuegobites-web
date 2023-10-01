@@ -9,13 +9,18 @@ use Inertia\Inertia;
 
 class RolesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:gestionar_roles']);
+    }
+
     public function index(Request $request)
     {
         $roles = Role::query()
             ->when($request->input('search'), function ($q, $search) {
                 $q->where('name', 'like', "%{$search}%");
             })
-        ->paginate($request->input('perPage') ?? 10);
+            ->paginate($request->input('perPage') ?? 10);
 
         return Inertia::render('Admin/Roles/Index', [
             'roles'     => $roles,
@@ -30,12 +35,12 @@ class RolesController extends Controller
 
     public function store(Request $request)
     {
-        $rules =[
+        $rules = [
             'name'          => 'required|unique:roles,name',
             'description'   => 'required',
         ];
 
-        $data = $this->validate($request,$rules);
+        $data = $this->validate($request, $rules);
 
         Role::create($data);
 
@@ -58,7 +63,7 @@ class RolesController extends Controller
             'description'   => "required",
         ];
 
-        $data = $this->validate($request,$rules);
+        $data = $this->validate($request, $rules);
 
         $role->update($data);
 
@@ -67,7 +72,7 @@ class RolesController extends Controller
         ]);
     }
 
-    public function destroy(Role $role,Request $request)
+    public function destroy(Role $role, Request $request)
     {
         $role->delete();
 
