@@ -248,7 +248,7 @@ const readEdit = (venta) => {
             precio: detalle.precio,
             cantidad: detalle.cantidad,
             imagen: detalle.producto.imagen ?? defaultProducto,
-            total: detalle.precio
+            total: detalle.total
        }
     })
 }

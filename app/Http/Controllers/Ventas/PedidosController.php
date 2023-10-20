@@ -19,14 +19,16 @@ class PedidosController extends Controller
 
         $endDay = $request->has('fecha_fin')
             ? Carbon::parse($request->input('fecha_fin'))
-            : now()->addDay(1);
+            : now();
 
         $pedidos = VentaDetalle::query()
             ->withWhereHas('venta', function ($q) use ($starDay, $endDay) {
                 $q->where('pagado', 0);
 
                 $q->where(function ($query) use ($starDay, $endDay) {
-                    $query->whereBetween('fecha', [$starDay, $endDay]);
+                    // $query->whereBetween('fecha', [$starDay, $endDay]);
+                    $query->whereDate('fecha', '>=', $starDay);
+                    $query->whereDate('fecha', '<=', $endDay);
                 });
             })
             ->paginate(25);
@@ -44,7 +46,9 @@ class PedidosController extends Controller
             ->join('ventas', 'ventas.id', '=', 'ventas_detalles.id_venta')
             ->where('ventas.pagado', 0)
             ->where(function ($query) use ($starDay, $endDay) {
-                $query->whereBetween('fecha', [$starDay, $endDay]);
+                $query->whereDate('fecha', '>=', $starDay);
+                $query->whereDate('fecha', '<=', $endDay);
+                // $query->whereBetween('fecha', [$starDay, $endDay]);
             })
             ->groupBy('productos.nombre', 'productos.codigo')
             ->get();

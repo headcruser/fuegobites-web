@@ -78,12 +78,14 @@ clipboard.on('success', function (e) {
     })
 })
 
-const onClickFilterDate =  () => {
+const onClickFilterDate =  ({calendarRef}) => {
     const [fecha_inicio,fecha_fin] = dates.value;
 
     if (fecha_inicio) {
         const mfecha_inicio = moment(fecha_inicio).format('YYYY-MM-DD');
         const mfecha_fin = moment(fecha_fin ?? fecha_inicio).format('YYYY-MM-DD');
+
+        calendarRef.overlayVisible = false
 
         router.get(route("ventas.pedidos.index"),
           {
@@ -119,10 +121,10 @@ const onClickFilterDate =  () => {
 
         <div class="d-flex align-content-center justify-content-between mb-3">
 
-            <Calendar v-model="dates" showIcon selectionMode="range" :manualInput="false" >
+            <Calendar v-model="dates" showIcon selectionMode="range" :manualInput="false" ref="calendarRef">
                 <template #footer>
                     <div class="m-2">
-                        <MDBBtn color="primary" size="sm" @click="onClickFilterDate">Filtrar</MDBBtn>
+                        <MDBBtn color="primary" size="sm" @click="onClickFilterDate($refs)">Filtrar</MDBBtn>
                     </div>
                 </template>
             </Calendar>
