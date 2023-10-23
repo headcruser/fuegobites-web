@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\Ventas\PedidosController;
+use App\Http\Controllers\Ventas\ReporteVentaController;
 use App\Http\Controllers\Ventas\VentasController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -58,13 +59,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::name('ventas.')->prefix('ventas')->group(function () {
-        Route::get('registro', [VentasController::class, 'index'])->name('registro.index');
-        Route::post('registro', [VentasController::class, 'store'])->name('registro.store');
-        Route::put('registro/{venta}', [VentasController::class, 'update'])->name('registro.update');
-        Route::delete('registro/{venta}', [VentasController::class, 'destroy'])->name('registro.destroy');
+
+        Route::prefix('registro')->name('registro.')->group(function () {
+            Route::get('/', [VentasController::class, 'index'])->name('index');
+            Route::post('/', [VentasController::class, 'store'])->name('store');
+            Route::put('{venta}', [VentasController::class, 'update'])->name('update');
+            Route::delete('{venta}', [VentasController::class, 'destroy'])->name('destroy');
+        });
+
 
         Route::name('pedidos.')->prefix('pedidos')->group(function () {
             Route::get('/', [PedidosController::class, 'index'])->name('index');
+        });
+
+        Route::name('reporte.')->prefix('reporte')->group(function () {
+            Route::get('/', [ReporteVentaController::class, 'index'])->name('index');
         });
     });
 });

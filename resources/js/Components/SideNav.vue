@@ -111,7 +111,7 @@ const handleLinkClick = () => {
                             :href="route('ventas.registro.index')"
                             :active="route().current('ventas.registro.*')"
                             @click="handleLinkClick">
-                            <span>Registrar ventas</span>
+                            <span>Registrar pedido</span>
                         </NavLink>
                     </MDBSideNavItem>
 
@@ -120,7 +120,16 @@ const handleLinkClick = () => {
                             :href="route('ventas.pedidos.index')"
                             :active="route().current('ventas.pedidos.*')"
                             @click="handleLinkClick">
-                            <span>Pedidos</span>
+                            <span>Pedidos por hacer</span>
+                        </NavLink>
+                    </MDBSideNavItem>
+
+                    <MDBSideNavItem>
+                        <NavLink
+                            :href="route('ventas.reporte.index')"
+                            :active="route().current('ventas.reporte.*')"
+                            @click="handleLinkClick">
+                            <span>Reporte Ventas</span>
                         </NavLink>
                     </MDBSideNavItem>
                 </MDBSideNavItem>
