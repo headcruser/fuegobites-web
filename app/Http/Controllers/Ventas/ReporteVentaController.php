@@ -12,13 +12,14 @@ class ReporteVentaController extends Controller
 {
     public function index(Request $request)
     {
-        $tipo = '';
+        $tipo = 'dia';
         $fecha = Carbon::today();
         $fecha_antes = Carbon::today();
         $fecha_despues = Carbon::today();
         $total_efectivo = 0;
         $total_pagado = 0;
         $total_transferencia = 0;
+        $paginacion = 10;
 
         $ventaQuery = $ventas = Venta::query()
             ->select([
@@ -34,198 +35,71 @@ class ReporteVentaController extends Controller
             ->where('pagado', 1);
 
 
-
-        if (!$request->has('tipo') && !$request->filled('tipo')) {
-            $tipo = 'dia';
-        } else {
+        if ($request->has('tipo') && $request->filled('tipo')) {
             $tipo = $request->input('tipo');
         }
 
+        if ($request->has('fecha') && $request->filled('tipo')) {
+            $fecha = Carbon::parse($request->input('fecha'));
+        }
+
+        if ($request->has('paginacion') && $request->filled('paginacion')) {
+            $paginacion = $request->input('paginacion');
+        }
+
         if ($tipo == 'dia') {
-            if ($request->has('fecha')) {
-                $fecha = Carbon::parse($request->input('fecha'));
-            } else {
-                $fecha = Carbon::today();
-            }
-
-            $ventas = (clone $ventaQuery)
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfDay()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfDay()->format('Y-m-d H:i:s')
-                ])
-                ->with(['detalles.producto'])
-                ->orderBy('fecha_pago', 'desc')
-                ->paginate(25);
-
-
-            $ventas->appends($request->all());
-
-
-            $total_pagado = (clone $ventaQuery)
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfDay()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfDay()->format('Y-m-d H:i:s')
-                ])
-                ->sum('total');
-
-
-            $total_efectivo = (clone $ventaQuery)
-                ->where('forma_pago', 'Efectivo')
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfDay()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfDay()->format('Y-m-d H:i:s')
-                ])
-                ->sum('total');
-
-            $total_transferencia = (clone $ventaQuery)
-                ->where('forma_pago', 'Transferencia')
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfDay()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfDay()->format('Y-m-d H:i:s')
-                ])
-                ->sum('total');
-
-
-            $fecha_antes = Carbon::createFromFormat('Y-m-d', $fecha->format('Y-m-d'))->subDay();
-            $fecha_despues = Carbon::createFromFormat('Y-m-d', $fecha->format('Y-m-d'))->addDay();
+            $fecha_antes = $fecha->clone();
+            $fecha_despues = $fecha->clone();
         }
 
         if ($tipo == 'semanal') {
-            if ($request->has('fecha')) {
-                $fecha = Carbon::createFromFormat('d-m-Y', $request->fecha);
-            } else {
-                $fecha = Carbon::today();
-            };
-
-            $ventas = (clone $ventaQuery)
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfWeek()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfWeek()->format('Y-m-d H:i:s')
-                ])
-                ->with(['detalles.producto'])
-                ->orderBy('fecha_pago', 'desc')
-                ->paginate(25);
-
-
-            $ventas->appends($request->all());
-
-            $total_pagado = (clone $ventaQuery)
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfWeek()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfWeek()->format('Y-m-d H:i:s')
-                ])
-                ->sum('total');
-
-            $total_efectivo = (clone $ventaQuery)
-                ->where('forma_pago', 'Efectivo')
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfWeek()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfWeek()->format('Y-m-d H:i:s')
-                ])
-                ->sum('total');
-
-            $total_transferencia = (clone $ventaQuery)
-                ->where('forma_pago', 'Transferencia')
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfWeek()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfWeek()->format('Y-m-d H:i:s')
-                ])
-                ->sum('total');
-
-            $fecha_antes = Carbon::createFromFormat('Y-m-d', $fecha->format('Y-m-d'))->subDays(7);
-            $fecha_despues = Carbon::createFromFormat('Y-m-d', $fecha->format('Y-m-d'))->addDays(7);
+            $fecha_antes =  $fecha->clone()->startOfWeek();
+            $fecha_despues = $fecha->clone()->endOfWeek();
         }
 
         if ($tipo == 'mensual') {
-            if ($request->has('fecha')) {
-                $fecha = Carbon::createFromFormat('d-m-Y', $request->fecha);
-            } else {
-                $fecha = Carbon::today();
-            }
-
-            $ventas = (clone $ventaQuery)
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfWeek()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfWeek()->format('Y-m-d H:i:s')
-                ])
-                ->orderBy('fecha_pago', 'desc')
-                ->paginate(25);
-
-
-            $ventas->appends($request->all());
-
-            $total_pagado = (clone $ventaQuery)
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfMonth()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfMonth()->format('Y-m-d H:i:s')
-                ])
-                ->sum('total');
-
-            $total_efectivo = (clone $ventaQuery)
-                ->where('forma_pago', 'Efectivo')
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfMonth()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfMonth()->format('Y-m-d H:i:s')
-                ])
-                ->sum('total');
-
-            $total_transferencia = (clone $ventaQuery)
-                ->where('forma_pago', 'Transferencia')
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfMonth()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfMonth()->format('Y-m-d H:i:s')
-                ])
-                ->sum('total');
-
-            $fecha_antes = Carbon::createFromFormat('Y-m-d', $fecha->format('Y-m-d'))->subMonth();
-            $fecha_despues = Carbon::createFromFormat('Y-m-d', $fecha->format('Y-m-d'))->addMonth();
+            $fecha_antes = $fecha->clone()->subMonth();
+            $fecha_despues = $fecha->clone()->addMonth();
         }
 
         if ($tipo == 'anual') {
-            if ($request->has('fecha')) {
-                $fecha = Carbon::createFromFormat('d-m-Y', $request->fecha);
-            } else {
-                $fecha = Carbon::today();
-            }
-
-            $ventas = (clone $ventaQuery)
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfYear()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfYear()->format('Y-m-d H:i:s')
-                ])
-                ->with(['detalles.producto'])
-                ->orderBy('fecha_pago', 'desc')
-                ->paginate(25);
-
-
-            $ventas->appends($request->all());
-
-            $total_pagado = (clone $ventaQuery)
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfYear()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfYear()->format('Y-m-d H:i:s')
-                ])
-                ->sum('total');
-
-            $total_efectivo = (clone $ventaQuery)
-                ->where('forma_pago', 'Efectivo')
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfYear()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfYear()->format('Y-m-d H:i:s')
-                ])
-                ->sum('total');
-
-            $total_transferencia = (clone $ventaQuery)
-                ->where('forma_pago', 'Transferencia')
-                ->whereBetween('fecha_pago', [
-                    $fecha->clone()->startOfYear()->format('Y-m-d H:i:s'),
-                    $fecha->clone()->endOfYear()->format('Y-m-d H:i:s')
-                ])
-                ->sum('total');
-
-            $fecha_antes = Carbon::createFromFormat('Y-m-d', $fecha->format('Y-m-d'))->subYear();
-            $fecha_despues = Carbon::createFromFormat('Y-m-d', $fecha->format('Y-m-d'))->addYear();
+            $fecha_antes = $fecha->clone()->subYear();
+            $fecha_despues = $fecha->clone()->addYear();
         }
+
+        $ventas = (clone $ventaQuery)
+            ->whereBetween('fecha_pago', [
+                $fecha_antes,
+                $fecha_despues,
+            ])
+            ->orderBy('fecha_pago', 'desc')
+            ->paginate($paginacion);
+
+
+        $ventas->appends($request->all());
+
+        $total_pagado = (clone $ventaQuery)
+            ->whereBetween('fecha_pago', [
+                $fecha_antes,
+                $fecha_despues,
+            ])
+            ->sum('total');
+
+        $total_efectivo = (clone $ventaQuery)
+            ->where('forma_pago', 'Efectivo')
+            ->whereBetween('fecha_pago', [
+                $fecha_antes,
+                $fecha_despues,
+            ])
+            ->sum('total');
+
+        $total_transferencia = (clone $ventaQuery)
+            ->where('forma_pago', 'Transferencia')
+            ->whereBetween('fecha_pago', [
+                $fecha->clone()->startOfYear()->format('Y-m-d H:i:s'),
+                $fecha->clone()->endOfYear()->format('Y-m-d H:i:s')
+            ])
+            ->sum('total');
 
         return Inertia::render('Ventas/ReporteVenta/Index', [
             'total_pagado'          => $total_pagado,
@@ -236,6 +110,7 @@ class ReporteVentaController extends Controller
             'fecha'                 => $fecha,
             'fecha_antes'           => $fecha_antes,
             'fecha_despues'         => $fecha_despues,
+            'paginacion'            => $paginacion,
         ]);
     }
 }

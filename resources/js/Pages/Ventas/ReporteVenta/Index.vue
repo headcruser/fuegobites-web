@@ -4,21 +4,21 @@ import {
     MDBCol,
     MDBCard,
     MDBCardBody,
+    MDBSelect,
 } from "mdb-vue-ui-kit";
 
-import {onMounted,ref} from "vue";
-
+import {ref,onMounted,onBeforeMount,computed} from "vue";
 
 import _ from "lodash";
 
 import moment from "moment";
 import 'moment/dist/locale/es-mx'
 
+import { router} from '@inertiajs/vue3'
+
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Pagination from '@/Components/Pagination.vue';
 
-
-import { onBeforeMount,computed } from "vue";
 
 const props = defineProps({
     total_pagado: Number,
@@ -28,19 +28,50 @@ const props = defineProps({
     fecha_antes: String,
     fecha_despues: String,
     ventas: Object,
-    tipo:String
+    tipo:String,
+    paginacion:Number
 });
 
-
 const totalPorPagina = computed(() => Intl.NumberFormat().format( _.sumBy(props.ventas.data,(item) => Number(item.total)) ));
+
+const tituloFecha = computed(() => {
+    const info = {
+        dia:  moment(props.fecha).format('ll'),
+        semanal: `Del ${moment(props.fecha_antes).format('DD MMM')} al ${moment(props.fecha_despues).format('DD MMM')} `,
+        mensual:_.upperFirst(moment(props.fecha).format('MMMM')),
+        anual: moment(props.fecha).format('YYYY'),
+    }
+    return info[props.tipo] ?? '';
+})
+
+const pages = ref([
+    { text: "10", value: 10 },
+    { text: "25", value: 25 },
+    { text: "50", value: 50 },
+    { text: "100", value: 100 },
+    { text: "250", value: 250 },
+])
+
+const pageSelected = ref(props.paginacion);
 
 onBeforeMount(() => {
 })
 
 onMounted(() => {
+
 })
 
-
+const evtChangePaginate = () => {
+    router.get(route('ventas.reporte.index'),{
+            tipo: props.tipo,
+            paginacion: Number(pageSelected.value)
+        },
+        {
+            preserveState:true,
+            replace:true,
+        }
+    );
+}
 </script>
 
 <template>
@@ -49,7 +80,7 @@ onMounted(() => {
         <h4 class="mb-0">Reporte de Ventas</h4>
 
         <MDBRow>
-            <MDBCol sm="12" lg="9">
+            <MDBCol>
                 <div class="btn-group mt-3 mb-3">
                     <a
                       :href="route('ventas.reporte.index',{ tipo: 'dia' })"
@@ -72,12 +103,20 @@ onMounted(() => {
                       :class="{'btn-primary':props.tipo == 'anual','btn-white':props.tipo != 'anual'}"
                       class="btn">Anual</a>
                 </div>
+            </MDBCol>
+        </MDBRow>
 
+        <MDBRow>
+            <MDBCol sm="12" lg="9" class="mb-3">
                 <MDBCard>
                     <MDBCardBody>
-                        <MDBRow class="mb-2">
+                        <MDBRow class="mb-2 d-flex align-content-center ">
                             <MDBCol>
-                                <a :href="route('ventas.reporte.index',{ tipo: 'dia',fecha: moment(props.fecha_antes).format('YYYY-MM-DD') })"
+                                <a :href="route('ventas.reporte.index',{
+                                        tipo: props.tipo,
+                                        fecha: moment(props.fecha_antes).format('YYYY-MM-DD'),
+                                        paginacion: Number(pageSelected)
+                                    })"
                                     data-toggle="tooltip"
                                     data-placement="top" class="btn btn-primary btn-sm text-white no_print">
                                     <i class="fas fa-arrow-alt-circle-left fa-2x"></i>
@@ -85,7 +124,7 @@ onMounted(() => {
                             </MDBCol>
 
                             <MDBCol class="text-center">
-                                <h3> {{ moment(props.fecha).format('LL') }}
+                                <h3 class="text-nowrap"> {{ tituloFecha }}
                                     <small><a class="no_print" data-toggle="modal" data-target="#seleccionarFecha">
                                         <i class="far fa-calendar-alt"></i></a>
                                     </small>
@@ -93,7 +132,11 @@ onMounted(() => {
                             </MDBCol>
 
                             <MDBCol class="text-end">
-                                <a :href="route('ventas.reporte.index',{ tipo: 'dia',fecha: moment(props.fecha_despues).format('YYYY-MM-DD') })"
+                                <a :href="route('ventas.reporte.index',{
+                                    tipo: props.tipo,
+                                    fecha: moment(props.fecha_despues).format('YYYY-MM-DD'),
+                                    paginacion: Number(pageSelected)
+                                })"
                                     data-toggle="tooltip"
                                     data-placement="top" class="btn btn-primary btn-sm text-white no_print">
                                     <i class="fas fa-arrow-alt-circle-right fa-2x"></i>
@@ -101,12 +144,30 @@ onMounted(() => {
                             </MDBCol>
                         </MDBRow>
 
+                        <MDBRow>
+                            <MDBCol>
+                                <MDBSelect
+                                    class="w-25"
+                                    size="sm"
+                                    v-model:options="pages"
+                                    v-model:selected="pageSelected"
+                                    @change="evtChangePaginate"
+                                />
+                            </MDBCol>
+                            <MDBCol class="text-center">
+                                <b>Total:</b> {{ props.ventas.total }}
+                            </MDBCol>
+                            <MDBCol>
+                                <Pagination class="mt-6" :links="props.ventas.links" />
+                            </MDBCol>
+                        </MDBRow>
+
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover w-100" id="tabla_areas" >
+                            <table class="table table-striped table-bordered w-100" id="tabla_areas" >
                                 <thead>
                                     <tr>
                                         <th>Actividad</th>
-                                        <th>Fecha</th>
+                                        <th>Fecha pago</th>
                                         <th>Forma Pago</th>
                                         <th>Total</th>
                                     </tr>
@@ -116,11 +177,8 @@ onMounted(() => {
                                         <td>Venta</td>
                                         <td>
                                             <div>
-                                                {{ moment(venta.fecha).format('LL') }}
-                                            </div>
-                                            <div>
                                                 <small class="text-muted">
-                                                   <b class="text-dark">Fecha Pago:</b>  {{ moment(venta.fecha_pago).format('LL') }}
+                                                    {{ moment(venta.fecha_pago).format('LL') }}
                                                 </small>
                                             </div>
                                         </td>
@@ -141,14 +199,6 @@ onMounted(() => {
                             </table>
                         </div>
 
-                        <MDBRow>
-                            <MDBCol>
-                                <b>Total:</b> {{ props.ventas.total }}
-                            </MDBCol>
-                            <MDBCol>
-                                <Pagination class="mt-6" :links="props.ventas.links" />
-                            </MDBCol>
-                        </MDBRow>
                     </MDBCardBody>
                 </MDBCard>
             </MDBCol>
@@ -159,9 +209,9 @@ onMounted(() => {
                         <p class="text-uppercase small mb-2">
                             <strong>INGRESO TOTAL</strong>
                         </p>
-                        <h5 class="mb-0">
+                        <h6 class="mb-0">
                             <strong>{{ props.total_pagado }}</strong>
-                        </h5>
+                        </h6>
                     </div>
                 </div>
 
