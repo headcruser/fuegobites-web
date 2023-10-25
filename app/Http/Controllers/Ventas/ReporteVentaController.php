@@ -13,9 +13,15 @@ class ReporteVentaController extends Controller
     public function index(Request $request)
     {
         $tipo = 'dia';
+
         $fecha = Carbon::today();
+
         $fecha_antes = Carbon::today();
         $fecha_despues = Carbon::today();
+
+        $fecha_antes_query = Carbon::today();
+        $fecha_despues_query = Carbon::today();
+
         $total_efectivo = 0;
         $total_pagado = 0;
         $total_transferencia = 0;
@@ -48,29 +54,41 @@ class ReporteVentaController extends Controller
         }
 
         if ($tipo == 'dia') {
-            $fecha_antes = $fecha->clone();
-            $fecha_despues = $fecha->clone();
+            $fecha_antes_query =  $fecha->clone()->startOfDay();
+            $fecha_despues_query = $fecha->clone()->endOfDay();
+
+            $fecha_antes = $fecha->clone()->subDay();
+            $fecha_despues = $fecha->clone()->addDay();
         }
 
         if ($tipo == 'semanal') {
-            $fecha_antes =  $fecha->clone()->startOfWeek();
-            $fecha_despues = $fecha->clone()->endOfWeek();
+            $fecha_antes_query = $fecha->clone()->startOfWeek();
+            $fecha_despues_query = $fecha->clone()->endOfWeek();
+
+            $fecha_antes =  $fecha->clone()->subDays(7);
+            $fecha_despues = $fecha->clone()->addDays(7);
         }
 
         if ($tipo == 'mensual') {
+            $fecha_antes_query = $fecha->clone()->startOfMonth();
+            $fecha_despues_query = $fecha->clone()->endOfMonth();
+
             $fecha_antes = $fecha->clone()->subMonth();
             $fecha_despues = $fecha->clone()->addMonth();
         }
 
         if ($tipo == 'anual') {
+            $fecha_antes_query = $fecha->clone()->startOfYear();
+            $fecha_despues_query = $fecha->clone()->endOfYear();
+
             $fecha_antes = $fecha->clone()->subYear();
             $fecha_despues = $fecha->clone()->addYear();
         }
 
         $ventas = (clone $ventaQuery)
             ->whereBetween('fecha_pago', [
-                $fecha_antes,
-                $fecha_despues,
+                $fecha_antes_query,
+                $fecha_despues_query,
             ])
             ->orderBy('fecha_pago', 'desc')
             ->paginate($paginacion);
@@ -80,24 +98,24 @@ class ReporteVentaController extends Controller
 
         $total_pagado = (clone $ventaQuery)
             ->whereBetween('fecha_pago', [
-                $fecha_antes,
-                $fecha_despues,
+                $fecha_antes_query,
+                $fecha_despues_query,
             ])
             ->sum('total');
 
         $total_efectivo = (clone $ventaQuery)
             ->where('forma_pago', 'Efectivo')
             ->whereBetween('fecha_pago', [
-                $fecha_antes,
-                $fecha_despues,
+                $fecha_antes_query,
+                $fecha_despues_query,
             ])
             ->sum('total');
 
         $total_transferencia = (clone $ventaQuery)
             ->where('forma_pago', 'Transferencia')
             ->whereBetween('fecha_pago', [
-                $fecha->clone()->startOfYear()->format('Y-m-d H:i:s'),
-                $fecha->clone()->endOfYear()->format('Y-m-d H:i:s')
+                $fecha_antes_query,
+                $fecha_despues_query,
             ])
             ->sum('total');
 
@@ -107,9 +125,9 @@ class ReporteVentaController extends Controller
             'total_transferencia'   => $total_transferencia,
             'tipo'                  => $tipo,
             'ventas'                => $ventas,
-            'fecha'                 => $fecha,
-            'fecha_antes'           => $fecha_antes,
-            'fecha_despues'         => $fecha_despues,
+            'fecha'                 => $fecha->format('Y-m-d'),
+            'fecha_antes'           => $fecha_antes->format('Y-m-d'),
+            'fecha_despues'         => $fecha_despues->format('Y-m-d'),
             'paginacion'            => $paginacion,
         ]);
     }
