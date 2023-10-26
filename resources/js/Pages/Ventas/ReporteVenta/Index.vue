@@ -152,7 +152,7 @@ const evtChangePaginate = () => {
         </MDBRow>
 
         <MDBRow>
-            <MDBCol sm="12" lg="9" class="mb-3">
+            <MDBCol sm="12" lg="9" class="mb-3 order-last order-lg-first">
                 <MDBCard>
                     <MDBCardBody>
                         <MDBRow class="mb-2 d-flex align-content-center ">
