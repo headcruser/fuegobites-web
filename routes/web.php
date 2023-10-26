@@ -49,8 +49,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ])->names('roles');
 
         # NOTE: PERMISOS
-        Route::get('permisos', [PermissionsController::class, 'index'])->name('perms.index');
-        Route::post('perms-save', [PermissionsController::class, 'perms_save'])->name('perms.save');
+        Route::controller(PermissionsController::class)->group(function () {
+            Route::name('perms.')->prefix('permisos')->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('panel-permisos', 'panel')->name('panel');
+                Route::post('perms-save', 'perms_save')->name('save');
+            });
+
+            Route::resource('perms', PermissionsController::class)->parameters([
+                'perms' => 'permission'
+            ])->names('perms');
+        });
+
 
         # NOTE: PRODUCTOS
         Route::resource('productos', ProductosController::class)->parameters([

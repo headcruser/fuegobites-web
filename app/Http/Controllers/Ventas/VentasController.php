@@ -13,6 +13,11 @@ use Inertia\Inertia;
 
 class VentasController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:registrar_pedido']);
+    }
+
     public function index(Request $request)
     {
         $ventas = Venta::query()

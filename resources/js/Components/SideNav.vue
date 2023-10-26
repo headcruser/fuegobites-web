@@ -92,7 +92,10 @@ const handleLinkClick = () => {
                             <span>Permisos</span>
                         </NavLink>
 
-                        <NavLink :href="route('admin.productos.index')" :active="route().current('admin.productos.*')"
+                        <NavLink
+                            v-if="userPermissions.includes('gestionar_productos')"
+                            :href="route('admin.productos.index')"
+                            :active="route().current('admin.productos.*')"
                             @click="handleLinkClick">
                             <span>Productos</span>
                         </NavLink>
@@ -108,6 +111,7 @@ const handleLinkClick = () => {
 
                     <MDBSideNavItem>
                         <NavLink
+                            v-if="userPermissions.includes('registrar_pedido')"
                             :href="route('ventas.registro.index')"
                             :active="route().current('ventas.registro.*')"
                             @click="handleLinkClick">
@@ -117,6 +121,7 @@ const handleLinkClick = () => {
 
                     <MDBSideNavItem>
                         <NavLink
+                            v-if="userPermissions.includes('pedidos_por_hacer')"
                             :href="route('ventas.pedidos.index')"
                             :active="route().current('ventas.pedidos.*')"
                             @click="handleLinkClick">
@@ -126,6 +131,7 @@ const handleLinkClick = () => {
 
                     <MDBSideNavItem>
                         <NavLink
+                            v-if="userPermissions.includes('reporte_mensual')"
                             :href="route('ventas.reporte.index')"
                             :active="route().current('ventas.reporte.*')"
                             @click="handleLinkClick">

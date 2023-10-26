@@ -11,6 +11,11 @@ use Inertia\Inertia;
 
 class PedidosController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:pedidos_por_hacer']);
+    }
+
     public function index(Request $request)
     {
         $starDay = $request->has('fecha_inicio')

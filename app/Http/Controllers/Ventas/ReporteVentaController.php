@@ -10,6 +10,11 @@ use Inertia\Inertia;
 
 class ReporteVentaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:reporte_mensual']);
+    }
+
     public function index(Request $request)
     {
         $tipo = 'dia';

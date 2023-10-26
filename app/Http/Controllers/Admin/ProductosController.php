@@ -10,6 +10,11 @@ use Inertia\Inertia;
 
 class ProductosController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:gestionar_productos']);
+    }
+
     public function index(Request $request)
     {
         $productos = Producto::query()

@@ -15,7 +15,75 @@ class PermissionsController extends Controller
         $this->middleware(['permission:gestionar_permisos']);
     }
 
-    public function index()
+    public function index(Request $request)
+    {
+        $perms = Permission::query()
+            ->when($request->input('search'), function ($q, $search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+            ->paginate($request->input('perPage') ?? 10);
+
+        return Inertia::render('Admin/Perms/Index', [
+            'perms' => $perms,
+            'filters'   => $request->only(['search', 'perPage']),
+        ]);
+    }
+
+    public function create()
+    {
+        return Inertia::render('Admin/Perms/Create', []);
+    }
+
+    public function store(Request $request)
+    {
+        $rules = [
+            'name'          => 'required',
+            'description'   => 'required',
+        ];
+
+        $data = $this->validate($request, $rules);
+
+        Permission::create($data);
+
+        return redirect()->route('admin.perms.index')->with([
+            'message' => 'Registro agregado correctamente'
+        ]);
+    }
+
+    public function edit(Permission $permission)
+    {
+        return Inertia::render('Admin/Perms/Edit', [
+            'permission' => $permission
+        ]);
+    }
+
+    public function update(Request $request, Permission $permission)
+    {
+        $rules = [
+            'name'          => "required|unique:permissions,name,{$permission->id}",
+            'description'   => "required",
+        ];
+
+        $data = $this->validate($request, $rules);
+
+        $permission->update($data);
+
+        return redirect()->route('admin.perms.index')->with([
+            'message' => 'Registro actualizado correctamente'
+        ]);
+    }
+
+    public function destroy(Permission $permission)
+    {
+        $permission->roles()->delete();
+        $permission->delete();
+
+        return redirect()->route('admin.perms.index')->with([
+            'message' => "Registro eliminado correctamente"
+        ]);
+    }
+
+    public function panel()
     {
         $roles = Role::select('id', 'name', 'description')
             ->with(['permissions' => function ($query) {
@@ -23,7 +91,7 @@ class PermissionsController extends Controller
             }])
             ->get();
 
-        return Inertia::render('Admin/Perms/Index', [
+        return Inertia::render('Admin/Perms/Panel', [
             'roles' => $roles,
             'perms' => Permission::get(),
         ]);
