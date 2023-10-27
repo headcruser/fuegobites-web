@@ -70,74 +70,83 @@ const handleLinkClick = () => {
             </div>
 
 
-            <MDBSideNavMenu accordion>
-                <MDBSideNavItem collapse icon="cog" title="Administración" :show="route().current('admin.*')">
-                    <MDBSideNavItem>
+            <MDBSideNavMenu>
+                <MDBSideNavItem>
+                    <NavLink
+                        :href="route('admin.users.index')"
+                        :active="route().current('admin.users.*')"
+                        v-if="userPermissions.includes('gestionar_usuarios')"
+                        @click="handleLinkClick">
+                        <MDBIcon icon="user" class="fa-fw me-3"></MDBIcon>
+                        <span>Usuarios</span>
+                    </NavLink>
+                </MDBSideNavItem>
 
-                        <NavLink :href="route('admin.users.index')" :active="route().current('admin.users.*')"
-                            v-if="userPermissions.includes('gestionar_usuarios')"
-                            @click="handleLinkClick">
-                            <span>Usuarios</span>
-                        </NavLink>
+                <MDBSideNavItem>
+                    <NavLink
+                        :href="route('admin.roles.index')"
+                        :active="route().current('admin.roles.*')"
+                        v-if="userPermissions.includes('gestionar_roles')"
+                        @click="handleLinkClick">
+                        <MDBIcon icon="building" class="fa-fw me-3"></MDBIcon>
+                        <span>Roles</span>
+                    </NavLink>
 
-                        <NavLink :href="route('admin.roles.index')" :active="route().current('admin.roles.*')"
-                            v-if="userPermissions.includes('gestionar_roles')"
-                            @click="handleLinkClick">
-                            <span>Roles</span>
-                        </NavLink>
+                </MDBSideNavItem>
 
-                        <NavLink :href="route('admin.perms.index')" :active="route().current('admin.perms.*')"
-                            v-if="userPermissions.includes('gestionar_permisos')"
-                            @click="handleLinkClick">
-                            <span>Permisos</span>
-                        </NavLink>
+                <MDBSideNavItem>
+                    <NavLink :href="route('admin.perms.index')" :active="route().current('admin.perms.*')"
+                        v-if="userPermissions.includes('gestionar_permisos')"
+                        @click="handleLinkClick">
+                        <MDBIcon icon="lock-open" class="fa-fw me-3"></MDBIcon>
+                        <span>Permisos</span>
+                    </NavLink>
+                </MDBSideNavItem>
+                <MDBSideNavItem>
+                    <NavLink
+                        v-if="userPermissions.includes('gestionar_productos')"
+                        :href="route('admin.productos.index')"
+                        :active="route().current('admin.productos.*')"
+                        @click="handleLinkClick">
+                        <MDBIcon icon="box" class="fa-fw me-3"></MDBIcon>
+                        <span>Productos</span>
+                    </NavLink>
+                </MDBSideNavItem>
 
-                        <NavLink
-                            v-if="userPermissions.includes('gestionar_productos')"
-                            :href="route('admin.productos.index')"
-                            :active="route().current('admin.productos.*')"
-                            @click="handleLinkClick">
-                            <span>Productos</span>
-                        </NavLink>
-                    </MDBSideNavItem>
+                <hr>
+
+                <MDBSideNavItem>
+                    <NavLink
+                        v-if="userPermissions.includes('registrar_pedido')"
+                        :href="route('ventas.registro.index')"
+                        :active="route().current('ventas.registro.*')"
+                        @click="handleLinkClick">
+                        <MDBIcon icon="book" class="fa-fw me-3"></MDBIcon>
+                        <span>Registrar pedido</span>
+                    </NavLink>
                 </MDBSideNavItem>
 
 
-                <MDBSideNavItem collapse
-                    :show="route().current('ventas.*')"
-                    tag="div"
-                    icon="cash-register"
-                    title="Ventas">
+                <MDBSideNavItem>
+                    <NavLink
+                        v-if="userPermissions.includes('pedidos_por_hacer')"
+                        :href="route('ventas.pedidos.index')"
+                        :active="route().current('ventas.pedidos.*')"
+                        @click="handleLinkClick">
+                        <MDBIcon icon="industry" class="fa-fw me-3"></MDBIcon>
+                        <span>Pedidos por hacer</span>
+                    </NavLink>
+                </MDBSideNavItem>
 
-                    <MDBSideNavItem>
-                        <NavLink
-                            v-if="userPermissions.includes('registrar_pedido')"
-                            :href="route('ventas.registro.index')"
-                            :active="route().current('ventas.registro.*')"
-                            @click="handleLinkClick">
-                            <span>Registrar pedido</span>
-                        </NavLink>
-                    </MDBSideNavItem>
-
-                    <MDBSideNavItem>
-                        <NavLink
-                            v-if="userPermissions.includes('pedidos_por_hacer')"
-                            :href="route('ventas.pedidos.index')"
-                            :active="route().current('ventas.pedidos.*')"
-                            @click="handleLinkClick">
-                            <span>Pedidos por hacer</span>
-                        </NavLink>
-                    </MDBSideNavItem>
-
-                    <MDBSideNavItem>
-                        <NavLink
-                            v-if="userPermissions.includes('reporte_mensual')"
-                            :href="route('ventas.reporte.index')"
-                            :active="route().current('ventas.reporte.*')"
-                            @click="handleLinkClick">
-                            <span>Reporte Ventas</span>
-                        </NavLink>
-                    </MDBSideNavItem>
+                <MDBSideNavItem>
+                    <NavLink
+                        v-if="userPermissions.includes('reporte_mensual')"
+                        :href="route('ventas.reporte.index')"
+                        :active="route().current('ventas.reporte.*')"
+                        @click="handleLinkClick">
+                        <MDBIcon icon="chart-line" class="fa-fw me-3"></MDBIcon>
+                        <span>Reporte Ventas</span>
+                    </NavLink>
                 </MDBSideNavItem>
 
                 <hr />
