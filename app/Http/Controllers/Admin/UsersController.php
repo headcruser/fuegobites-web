@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use File;
+use Image;
 use App\Models\Role;
 use App\Models\User;
 use Inertia\Inertia;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 use App\Http\Controllers\Controller;
-
-use Image;
-use File;
-
+use App\Notifications\DatosAcceso;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -94,6 +96,14 @@ class UsersController extends Controller
             $user->save();
         }
 
+        if ($request->has('enviar_datos')) {
+            try {
+                $user->notify(new DatosAcceso($user, $request->input('password')));
+            } catch (\Throwable $th) {
+                Log::error('No se pudo enviar datos de acceso.  Error: ' . $th->getMessage());
+            }
+        }
+
         return redirect()->route('admin.users.index')->with([
             'message' => "Registro creado correctamente"
         ]);
@@ -125,9 +135,8 @@ class UsersController extends Controller
         $usuario->save();
 
         if ($request->has('password')) {
-            $usuario->fill([
-                'password' => Hash::make($request->input('password'))
-            ]);
+            $usuario->password = Hash::make($request->input('password'));
+            $usuario->save();
         }
 
         if ($request->hasFile('photo')) {
@@ -158,6 +167,14 @@ class UsersController extends Controller
         if ($request->has('roles')) {
             $usuario->syncRoles($request->input('roles'));
             $usuario->save();
+        }
+
+        if ($request->has('enviar_datos') && $request->has('password')) {
+            try {
+                $usuario->notify(new DatosAcceso($usuario, $request->input('password')));
+            } catch (\Throwable $th) {
+                Log::error('No se pudo enviar datos de acceso.  Error: ' . $th->getMessage());
+            }
         }
 
         return redirect()->route('admin.users.index')->with([

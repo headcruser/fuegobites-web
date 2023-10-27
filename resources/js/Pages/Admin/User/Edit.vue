@@ -35,6 +35,7 @@ const form = useForm({
     email: props.user.email,
     password: '',
     photo: '',
+    enviar_datos:false
 })
 
 const submit = () => {
@@ -120,6 +121,10 @@ const submit = () => {
                                                 :class="{'is-invalid':form.errors.name}"
                                                 :invalid-feedback="form.errors.name"
                                             />
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <MDBCheckbox :label="'Enviar datos por correo'" v-model="form.enviar_datos"/>
                                         </div>
 
                                         <MDBBtn
