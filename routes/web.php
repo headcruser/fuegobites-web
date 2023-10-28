@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Admin\ProductosController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Ventas\PedidosController;
 use App\Http\Controllers\Ventas\ReporteVentaController;
 use App\Http\Controllers\Ventas\VentasController;
@@ -22,8 +22,10 @@ use Inertia\Inertia;
 |
 */
 
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
+    Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');
 

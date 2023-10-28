@@ -52,7 +52,7 @@ class ProductosController extends Controller
             $image = $request->file('imagen');
             $imgFile = Image::make($image->getRealPath());
 
-            $imgFile->resize(50, 50, function ($constraint) {
+            $imgFile->resize(200, 200, function ($constraint) {
                 $constraint->aspectRatio();
             });
 
@@ -88,7 +88,7 @@ class ProductosController extends Controller
             $image = $request->file('imagen');
             $imgFile = Image::make($image->getRealPath());
 
-            $imgFile->resize(50, 50, function ($constraint) {
+            $imgFile->resize(200, 200, function ($constraint) {
                 $constraint->aspectRatio();
             });
 
