@@ -28,7 +28,7 @@
         <header class="mb-7">
           <!-- Background image -->
           <div id="intro" class="bg-image shadow-1-strong"
-              style="background-image: url({{ asset('img/panditas.jpg') }});height: 500px;" alt="Daniela Slezáková">
+              style="background-image: url({{ asset('img/panditas.png') }});height: 500px;" alt="Daniela Slezáková">
             <div class="mask text-white" style="background-color: rgba(0, 0, 0, 0.6)">
               <div class="container d-flex align-items-center justify-content-center text-center h-100">
                 <div class="text-white">
