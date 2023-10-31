@@ -95,7 +95,7 @@ class ProductosController extends Controller
             $producto->imagen = (string) $imgFile->encode('data-url');
             $producto->save();
         } else {
-            if ($request->has('remover_imagen')) {
+            if ($request->boolean('remover_imagen')) {
                 $producto->imagen = null;
                 $producto->save();
             }
