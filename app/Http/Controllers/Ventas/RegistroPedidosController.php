@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
-class VentasController extends Controller
+class RegistroPedidosController extends Controller
 {
     public function __construct()
     {
@@ -27,13 +27,14 @@ class VentasController extends Controller
                 $q->where('pagado', 0);
             })
             ->with(['detalles.producto'])
+            ->orderBy('fecha', 'desc')
             ->paginate(25);
 
         $ventas->appends($request->all());
 
         $productos = Producto::toBase()->select(['id', 'nombre', 'codigo', 'descripcion', 'precio', 'imagen'])->get();
 
-        return Inertia::render('Ventas/RegistroVenta/Index', [
+        return Inertia::render('Ventas/RegistroPedidos/Index', [
             'ventas'        => $ventas,
             'productos'     => $productos,
             'filters'       => $request->only(['pagado']),

@@ -390,7 +390,7 @@ const updateEdit = async () => {
       v-model:visible="visibleRight"
       position="right"
       class="bg-white"
-      :baseZIndex="-1"
+      :baseZIndex="1064"
       style="width: 50rem;">
 
         <h4>Detalle del pedido</h4>

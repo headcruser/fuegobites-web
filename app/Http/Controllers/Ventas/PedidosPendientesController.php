@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
-class PedidosController extends Controller
+class PedidosPendientesController extends Controller
 {
     public function __construct()
     {
@@ -57,7 +57,7 @@ class PedidosController extends Controller
             ->get();
 
 
-        return Inertia::render('Ventas/Pedidos/Index', [
+        return Inertia::render('Ventas/PedidosPendientes/Index', [
             'pedidos'       => $pedidos,
             'totales'       => $totales,
             'fecha_inicio'  => $starDay->format('Y/m/d'),

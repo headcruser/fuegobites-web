@@ -5,9 +5,9 @@ use App\Http\Controllers\Admin\ProductosController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Ventas\PedidosController;
+use App\Http\Controllers\Ventas\PedidosPendientesController;
 use App\Http\Controllers\Ventas\ReporteVentaController;
-use App\Http\Controllers\Ventas\VentasController;
+use App\Http\Controllers\Ventas\RegistroPedidosController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -69,22 +69,35 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ])->names('productos');
     });
 
+    # NOTE: VENTAS
     Route::name('ventas.')->prefix('ventas')->group(function () {
 
-        Route::prefix('registro')->name('registro.')->group(function () {
-            Route::get('/', [VentasController::class, 'index'])->name('index');
-            Route::post('/', [VentasController::class, 'store'])->name('store');
-            Route::put('{venta}', [VentasController::class, 'update'])->name('update');
-            Route::delete('{venta}', [VentasController::class, 'destroy'])->name('destroy');
-        });
+        # NOTE: REGISTRO PEDIDOS
+        Route::prefix('registro')
+            ->name('registro.')
+            ->controller(RegistroPedidosController::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store');
+                Route::put('{venta}', 'update')->name('update');
+                Route::delete('{venta}', 'destroy')->name('destroy');
+            });
 
 
-        Route::name('pedidos.')->prefix('pedidos')->group(function () {
-            Route::get('/', [PedidosController::class, 'index'])->name('index');
-        });
+        # NOTE: VER REGISTROS PENDIENTES
+        Route::name('pedidos.')
+            ->prefix('pedidos')
+            ->controller(PedidosPendientesController::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+            });
 
-        Route::name('reporte.')->prefix('reporte')->group(function () {
-            Route::get('/', [ReporteVentaController::class, 'index'])->name('index');
-        });
+        # NOTE: VER REPORTE DE VENTAS
+        Route::name('reporte.')
+            ->prefix('reporte')
+            ->controller(ReporteVentaController::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+            });
     });
 });
