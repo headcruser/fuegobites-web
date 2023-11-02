@@ -58,6 +58,8 @@ const destroy = async (producto)  => {
         title: '¿Deseas eliminar el registro?',
         text: "Se eliminara el registro!",
         icon: 'warning',
+        allowOutsideClick:false,
+        allowEscapeKey: false,
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -105,56 +107,62 @@ const destroy = async (producto)  => {
 
                 <hr>
 
-                <div class="table-responsive">
-                    <MDBTable>
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Codigo</th>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Imagen</th>
-                                <th scope="col">Precio</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="producto in productos.data" :key="producto.id">
-                                <td>{{ producto.id }}</td>
-                                <td>{{ producto.codigo }}</td>
-                                <td>{{ producto.nombre }}</td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <img
-                                          :src="producto.imagen ?? defaultProducto"
-                                          :alt="`producto_${producto.id}`"
-                                          style="width: 45px;height: 45px;">
-                                    </div>
-                                </td>
 
-                                <td>{{ producto.precio }}</td>
-                                <td class="text-nowrap">
-                                    <Link
-                                        tabIndex="1"
-                                        className="btn btn-small btn-outline-primary btn-floating ripple-surface"
-                                        as="button"
-                                        :href="route('admin.productos.edit', producto.id)"
-                                    >
-                                        <MDBIcon icon="pencil"></MDBIcon>
-                                    </Link>
+                <MDBTable align="middle" responsive>
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Codigo</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Imagen</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="producto in productos.data" :key="producto.id">
+                            <td>{{ producto.id }}</td>
+                            <td>
+                                <span class="badge badge-success">{{ producto.codigo }}</span>
+                            </td>
+                            <td>
+                                <p class="fw-normal mb-1">{{ producto.nombre }}</p>
+                                <p class="text-muted mb-0">{{ producto.descripcion }}</p>
+                            </td>
+                            <td>
+                                <div >
+                                    <img
+                                        class="rounded-circle"
+                                        :src="producto.imagen ?? defaultProducto"
+                                        :alt="`producto_${producto.id}`"
+                                        style="width: 45px;height: 45px;">
+                                </div>
+                            </td>
 
-                                    <MDBBtn outline="danger"
-                                        title="Eliminar"
-                                        size="small"
-                                        floating
-                                        @click="destroy(producto)"
-                                    >
-                                        <MDBIcon  icon="trash"></MDBIcon>
-                                    </MDBBtn>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </MDBTable>
-                </div>
+                            <td>{{ producto.precio }}</td>
+                            <td class="text-nowrap">
+                                <Link
+                                    tabIndex="1"
+                                    className="btn btn-small btn-outline-primary btn-floating ripple-surface"
+                                    as="button"
+                                    :href="route('admin.productos.edit', producto.id)"
+                                >
+                                    <MDBIcon icon="pencil"></MDBIcon>
+                                </Link>
+
+                                <MDBBtn outline="danger"
+                                    title="Eliminar"
+                                    size="small"
+                                    floating
+                                    @click="destroy(producto)"
+                                >
+                                    <MDBIcon  icon="trash"></MDBIcon>
+                                </MDBBtn>
+                            </td>
+                        </tr>
+                    </tbody>
+                </MDBTable>
+
 
                 <Pagination class="mt-6" :links="productos.links" />
 

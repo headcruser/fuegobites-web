@@ -43,7 +43,7 @@ const submit = () => {
 <template>
     <AuthenticatedLayout>
         <div class="mt-4 mx-4">
-            <MDBContainer>
+            <MDBContainer fluid>
                 <!--Section: Content-->
                 <section>
                     <MDBRow>
