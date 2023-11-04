@@ -113,6 +113,17 @@ const handleLinkClick = () => {
                     </NavLink>
                 </MDBSideNavItem>
 
+                <MDBSideNavItem>
+                    <NavLink
+                        v-if="userPermissions.includes('gestionar_clientes')"
+                        :href="route('admin.clientes.index')"
+                        :active="route().current('admin.clientes.*')"
+                        @click="handleLinkClick">
+                        <MDBIcon icon="users" class="fa-fw me-3"></MDBIcon>
+                        <span>Clientes</span>
+                    </NavLink>
+                </MDBSideNavItem>
+
                 <hr>
 
                 <MDBSideNavItem>

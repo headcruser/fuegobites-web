@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ClientesController;
 use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Admin\ProductosController;
 use App\Http\Controllers\Admin\RolesController;
@@ -67,6 +68,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('productos', ProductosController::class)->parameters([
             'productos' => 'producto'
         ])->names('productos');
+
+        # NOTE: CLIENTES
+        Route::prefix('clientes')
+            ->name('clientes.')
+            ->controller(ClientesController::class)
+            ->group(function () {
+                Route::post('xeditable', 'xeditable')->name('xeditable');
+            });
+
+        Route::resource('clientes', ClientesController::class)->parameters([
+            'clientes' => 'cliente'
+        ])->names('clientes');
     });
 
     # NOTE: VENTAS
