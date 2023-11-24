@@ -46,6 +46,10 @@ const props = defineProps({
                                                 <td class="text-uppercase">{{ cliente.nombre }}</td>
                                             </tr>
                                             <tr>
+                                                <td class="bg-primary text-white fw-bold">NOMBRE</td>
+                                                <td class="text-uppercase">{{ cliente.email }}</td>
+                                            </tr>
+                                            <tr>
                                                 <td class="bg-primary text-white fw-bold">TELEFONO FIJO</td>
                                                 <td class="text-uppercase">{{ cliente.telefono_fijo }}</td>
                                             </tr>

@@ -9,6 +9,11 @@ use Inertia\Inertia;
 
 class ClientesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:gestionar_clientes']);
+    }
+
     public function index(Request $request)
     {
         $clientes = Cliente::query()
@@ -32,6 +37,7 @@ class ClientesController extends Controller
     {
         $rules = [
             'nombre'  => 'required',
+            'email'   => 'required',
         ];
 
         $this->validate($request, $rules);
@@ -91,6 +97,31 @@ class ClientesController extends Controller
 
         return response()->json([
             'cliente' => $cliente
+        ]);
+    }
+
+    public function select2(Request $request)
+    {
+        $nombre  = $request->input('search');
+        $page = $request->input('page');
+
+        $resultCount = 10;
+        $offset = ($page - 1) * $resultCount;
+
+        $collection = Cliente::where('nombre', 'like', "%{$nombre}%")
+            ->skip($offset)
+            ->take($resultCount)
+            ->get();
+
+        $count = Cliente::where('nombre', 'like', "%{$nombre}%")->orderBy('codigo')->count();
+        $endCount = $offset + $resultCount;
+        $morePages = $count > $endCount;
+
+        return response()->json([
+            'results'       => $collection,
+            'pagination'    => [
+                'more' => $morePages
+            ]
         ]);
     }
 }

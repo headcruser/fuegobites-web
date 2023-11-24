@@ -19,6 +19,7 @@ const props = defineProps({
 
 const form = useForm({
     nombre: props.cliente.nombre,
+    email: props.cliente.email,
     telefono_fijo: props.cliente.telefono_fijo,
     celular: props.cliente.celular,
     direccion: props.cliente.direccion,
@@ -78,6 +79,24 @@ const submit = () => {
                                                     />
                                                     <div v-if="form.errors.telefono_fijo" class="invalid-feedback">
                                                         {{ form.errors.telefono_fijo }}
+                                                    </div>
+                                                </div>
+                                            </MDBCol>
+                                        </MDBRow>
+
+
+                                        <MDBRow class="pb-3">
+                                            <MDBCol class="col-12">
+                                                <div class="form-group">
+                                                    <MDBInput
+                                                        v-model.trim="form.email"
+                                                        label="Correo"
+                                                        type="email"
+                                                        wrapperClass="mb-4"
+                                                        :helper="'Ejemplo: mi-correo@gmail.com'"
+                                                    />
+                                                    <div v-if="form.errors.email" class="invalid-feedback">
+                                                        {{ form.errors.email }}
                                                     </div>
                                                 </div>
                                             </MDBCol>

@@ -31,13 +31,43 @@ class PermissionTableSeeder extends Seeder
                 'description'   => 'Permite la gestion de permisos',
                 'guard_name'    => 'web',
             ]),
+            new Fluent([
+                'name'          => 'reporte_mensual',
+                'description'   => 'Permite ver el reporte mensual',
+                'guard_name'    => 'web',
+            ]),
+            new Fluent([
+                'name'          => 'registrar_pedido',
+                'description'   => 'Permite registrar un pedido',
+                'guard_name'    => 'web',
+            ]),
+            new Fluent([
+                'name'          => 'pedidos_por_hacer',
+                'description'   => 'Permite ver los pedidos pendientes',
+                'guard_name'    => 'web',
+            ]),
+            new Fluent([
+                'name'          => 'gestionar_productos',
+                'description'   => 'Permite gestionar productos',
+                'guard_name'    => 'web',
+            ]),
+            new Fluent([
+                'name'          => 'gestionar_clientes',
+                'description'   => 'Permite Gestionar clientes',
+                'guard_name'    => 'web',
+            ]),
+            new Fluent([
+                'name'          => 'gestionar_cotizaciones',
+                'description'   => 'Permite gestionar cotizaciones',
+                'guard_name'    => 'web',
+            ]),
         ];
 
         foreach ($permissions as $permission) {
 
             Permission::updateOrCreate([
                 'name'   => $permission->name,
-            ],[
+            ], [
                 'description'   => $permission->description,
                 'guard_name'    => $permission->guard_name,
                 'description'   => $permission->description,

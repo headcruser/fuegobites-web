@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ProductosController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Ventas\CotizacionesController;
 use App\Http\Controllers\Ventas\PedidosPendientesController;
 use App\Http\Controllers\Ventas\ReporteVentaController;
 use App\Http\Controllers\Ventas\RegistroPedidosController;
@@ -75,6 +76,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->controller(ClientesController::class)
             ->group(function () {
                 Route::post('xeditable', 'xeditable')->name('xeditable');
+                Route::post('select2', 'select2')->name('select2');
             });
 
         Route::resource('clientes', ClientesController::class)->parameters([
@@ -84,6 +86,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     # NOTE: VENTAS
     Route::name('ventas.')->prefix('ventas')->group(function () {
+
+        # NOTE: COTIZACIONES
+        Route::name('cotizaciones.')
+            ->prefix('cotizaciones')
+            ->controller(CotizacionesController::class)
+            ->group(function () {
+                Route::post('cambiar-cliente/{cotizacion}', 'cambiar_cliente')->name('cambiar-cliente');
+                Route::post('agregar-partida/{cotizacion}', 'agregar_partida')->name('agregar-partida');
+                Route::put('actualizar-partida/{partida}', 'actualizar_partida')->name('actualizar-partida');
+                Route::delete('eliminar-partida/{partida}', 'eliminar_partida')->name('eliminar-partida');
+                Route::post('enviar-cotizacion/{cotizacion}', 'enviar_cotizacion')->name('enviar-cotizacion');
+            });
+
+        Route::resource('cotizaciones', CotizacionesController::class)->parameters([
+            'cotizaciones' => 'cotizacion'
+        ])
+            ->names('cotizaciones')
+            ->except('store');
+
 
         # NOTE: REGISTRO PEDIDOS
         Route::prefix('registro')

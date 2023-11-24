@@ -128,6 +128,17 @@ const handleLinkClick = () => {
 
                 <MDBSideNavItem>
                     <NavLink
+                        v-if="userPermissions.includes('gestionar_cotizaciones')"
+                        :href="route('ventas.cotizaciones.index')"
+                        :active="route().current('ventas.cotizaciones.*')"
+                        @click="handleLinkClick">
+                        <MDBIcon icon="book" class="fa-fw me-3"></MDBIcon>
+                        <span>Cotizaciones</span>
+                    </NavLink>
+                </MDBSideNavItem>
+
+                <MDBSideNavItem>
+                    <NavLink
                         v-if="userPermissions.includes('registrar_pedido')"
                         :href="route('ventas.registro.index')"
                         :active="route().current('ventas.registro.*')"

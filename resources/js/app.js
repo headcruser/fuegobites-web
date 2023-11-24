@@ -39,9 +39,10 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Permissions from './Plugins/Permissions';
 import VueGates from 'vue-gates';
-
 import PrimeVue from 'primevue/config';
 import { configPrimeVue } from './Config/primevue'
+
+import { VueQueryPlugin } from "@tanstack/vue-query";
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Fuego Bites';
 
@@ -59,6 +60,7 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy)
             .use(VueSweetalert2)
             .use(PrimeVue,configPrimeVue)
+            .use(VueQueryPlugin)
             .mount(el);
     },
 });
