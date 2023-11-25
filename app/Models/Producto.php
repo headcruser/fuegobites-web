@@ -23,6 +23,7 @@ class Producto extends Model
         'precio',
 
         # imagen
-        # preparado
+        'preparado',
+        'visible',
     ];
 }

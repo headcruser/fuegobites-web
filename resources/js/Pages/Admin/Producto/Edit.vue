@@ -26,7 +26,9 @@ const form = useForm({
     descripcion: props.producto.descripcion,
     precio: props.producto.precio,
     imagen: '',
-    remover_imagen:false
+    remover_imagen:false,
+    preparado:props.producto.preparado,
+    visible: props.producto.visible,
 })
 
 const submit = () => {
@@ -108,6 +110,13 @@ const submit = () => {
                                                         {{ form.errors.descripcion }}
                                                     </div>
                                                 </div>
+                                            </MDBCol>
+                                        </MDBRow>
+
+                                        <MDBRow class="pb-3">
+                                            <MDBCol>
+                                                <MDBCheckbox label="¿Visible en página principal?" inline v-model="form.visible"/>
+                                                <MDBCheckbox label="¿Es preparado?" inline  v-model="form.preparado"/>
                                             </MDBCol>
                                         </MDBRow>
 

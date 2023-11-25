@@ -8,6 +8,7 @@ import {
   MDBCardBody,
   MDBInput,
   MDBBtn,
+  MDBCheckbox,
 } from "mdb-vue-ui-kit";
 
 import { MDBFileUpload } from "mdb-vue-file-upload";
@@ -24,6 +25,8 @@ const form = useForm({
     descripcion:'',
     precio:'',
     imagen: '',
+    preparado: false,
+    visible:false,
 })
 
 const submit = () => {
@@ -115,6 +118,13 @@ const submit = () => {
                                         </MDBRow>
 
                                         <MDBRow class="pb-3">
+                                            <MDBCol>
+                                                <MDBCheckbox label="¿Visible en página principal?" inline v-model="form.visible"/>
+                                                <MDBCheckbox label="¿Es preparado?" inline  v-model="form.preparado"/>
+                                            </MDBCol>
+                                        </MDBRow>
+
+                                        <MDBRow class="pb-3">
                                             <MDBCol class="col-12">
                                                 <div class="d-flex justify-content-center mb-4 border-1">
                                                     <MDBFileUpload
@@ -127,6 +137,10 @@ const submit = () => {
                                                 </div>
                                             </MDBCol>
                                         </MDBRow>
+
+
+
+
 
                                         <MDBBtn color="primary" class="mb-2" type="submit" :disabled="form.processing"> Guardar </MDBBtn>
                                     </form>

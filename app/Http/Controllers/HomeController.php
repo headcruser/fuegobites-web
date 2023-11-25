@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -11,11 +10,14 @@ class HomeController extends Controller
     {
         $productos = Producto::select(['id', 'nombre', 'descripcion', 'codigo', 'precio', 'imagen'])
             ->toBase()
-            ->where('preparado', 1)
+            ->where('visible', 1)
             ->get();
 
+        $defaultProducto = asset('img/default-product.png');
+
         return view('home', [
-            'productos' => $productos,
+            'productos'         => $productos,
+            'defaultProducto'   => $defaultProducto,
         ]);
     }
 }

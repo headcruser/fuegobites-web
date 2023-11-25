@@ -46,13 +46,16 @@ class ProductosController extends Controller
 
         $data = $this->validate($request, $rules);
 
+        $data['visible'] =  $request->boolean('visible');
+        $data['preparado'] = $request->boolean('preparado');
+
         $producto = Producto::create($data);
 
         if ($request->hasFile('imagen')) {
             $image = $request->file('imagen');
             $imgFile = Image::make($image->getRealPath());
 
-            $imgFile->resize(200, 200, function ($constraint) {
+            $imgFile->resize(300, 250, function ($constraint) {
                 $constraint->aspectRatio();
             });
 
@@ -81,6 +84,9 @@ class ProductosController extends Controller
             'descripcion'       => 'nullable',
             'imagen'            => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        $data['visible'] =  $request->boolean('visible');
+        $data['preparado'] = $request->boolean('preparado');
 
         $producto->update($data);
 

@@ -22,7 +22,8 @@
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
         <link rel="manifest" href="/site.webmanifest">
         <meta name="description" content="">
-        @vite('resources/js/app.css')
+        <link rel="stylesheet" href="{{ asset('css/mdb.min.css') }}">
+        {{-- @vite('resources/js/app.css') --}}
     </head>
     <body class="bg-light">
         <header class="mb-7">
@@ -72,9 +73,10 @@
                               data-ripple-color="light"
                               >
                               <img
-                                  src="{{ $producto->imagen }}"
+                                  src="{{ $producto->imagen ?? $defaultProducto }}"
                                   alt="producto_{{ $producto->id }}"
                                   class="w-100"
+                                  style="width: 300px;height: 250px;"
                               />
                               <a href="#!">
                                   <div class="mask" stye>

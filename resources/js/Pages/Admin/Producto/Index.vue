@@ -116,6 +116,7 @@ const destroy = async (producto)  => {
                             <th scope="col">Nombre</th>
                             <th scope="col">Imagen</th>
                             <th scope="col">Precio</th>
+                            <th scope="col">Visible</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
@@ -140,6 +141,9 @@ const destroy = async (producto)  => {
                             </td>
 
                             <td>{{ producto.precio }}</td>
+                            <td >
+                                <i class="fa-lg" :title="producto.visible ? 'Visible en página':'Oculto' "  :class="{'fa fa-eye':producto.visible ,'fa fa-eye-slash':!producto.visible }"></i>
+                            </td>
                             <td class="text-nowrap">
                                 <Link
                                     tabIndex="1"
