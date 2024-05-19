@@ -36,7 +36,10 @@ class UsersTableSeeder extends Seeder
                         'email' => $usuario->email,
                     ]);
                 } else {
-                    User::factory()->admin()->create();
+                    User::factory()->admin()->create([
+                        'name'  => $usuario->name,
+                        'email' => $usuario->email,
+                    ]);
                 }
             }
         }
