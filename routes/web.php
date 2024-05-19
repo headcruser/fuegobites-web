@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\Admin\ClientesController;
-use App\Http\Controllers\Admin\PermissionsController;
-use App\Http\Controllers\Admin\ProductosController;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\ClientesController;
+use App\Http\Controllers\Admin\ProductosController;
+use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Ventas\CotizacionesController;
-use App\Http\Controllers\Ventas\PedidosPendientesController;
 use App\Http\Controllers\Ventas\ReporteVentaController;
 use App\Http\Controllers\Ventas\RegistroPedidosController;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\Ventas\PedidosPendientesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,12 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    }
+    return redirect()->route('login');
+})->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
