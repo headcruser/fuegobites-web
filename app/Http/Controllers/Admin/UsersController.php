@@ -134,7 +134,8 @@ class UsersController extends Controller
 
         $usuario->save();
 
-        if ($request->has('password')) {
+        // VERIFICAR SI EL CAMPO ESTA PRESENTE Y NO ES UNA CADENA VACIA
+        if ($request->filled('password')) {
             $usuario->password = Hash::make($request->input('password'));
             $usuario->save();
         }
