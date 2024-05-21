@@ -23,13 +23,25 @@ class CotizacionesController extends Controller
 
     public function index(Request $request)
     {
-        $cotizaciones = Cotizacion::query()
+        $query = Cotizacion::query()
             ->when($request->input('status'), function ($q, $status) {
                 $q->where('cotizaciones.status', $status);
             })
-            ->with(['cliente', 'vendedor'])
-            ->paginate($request->input('perPage') ?? 10);
+            ->when($request->input('search'), function ($q, $search) {
 
+                $q->where(function ($q) use ($search) {
+                    $q->where('cotizaciones.id', 'like', "%{$search}%");
+
+                    $q->orWhereHas('cliente', function ($q) use ($search) {
+                        $q->where('clientes.nombre', 'like', "%{$search}%");
+                    });
+                });
+            })
+            ->with(['cliente', 'vendedor']);
+
+        $cotizaciones = $query
+            ->paginate($request->input('perPage') ?? 10)
+            ->appends($request->except('page'));
 
         return Inertia::render('Ventas/Cotizaciones/Index', [
             'cotizaciones'  => $cotizaciones,

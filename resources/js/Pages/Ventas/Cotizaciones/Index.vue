@@ -22,7 +22,7 @@ const props = defineProps({
     filters: Object
 });
 
-const search = ref(props.filters.search);
+const search = ref(props?.filters?.search);
 const perPage = ref(10);
 
 const createDebounce = () =>  {
@@ -39,15 +39,15 @@ watch(search,(value) => {
     const debouncer = createDebounce();
 
     debouncer(() => {
-        // router.get(route('ventas.cotizaciones.index'),{
-        //         search: value,
-        //         perPage: perPage.value,
-        //     },
-        //     {
-        //         preserveState:true,
-        //         replace:true,
-        //     }
-        // );
+        router.get(route('ventas.cotizaciones.index'),{
+                search: value,
+                perPage: perPage.value,
+            },
+            {
+                preserveState:true,
+                replace:true,
+            }
+        );
      })
 })
 
@@ -86,27 +86,33 @@ const destroy = async (cotizacion)  => {
                     <h4 class="mb-0">Cotizaciones</h4>
                 </MDBCardHeader>
             <MDBCardBody>
-                <div class="d-flex justify-content-end mb-2">
-                    <div class="d-flex">
-                        <div class="form-outline">
-                            <MDBInput v-model="search" label="Buscar"/>
-                        </div>
-
+                <div class="d-flex justify-content-between mb-2">
+                    <div>
                         <Link
                             as="button"
                             type="button"
-                            className="btn btn-primary btn-sm ms-3 ripple-surface"
+                            className="btn btn-primary ripple-surface"
                             :href="route('ventas.cotizaciones.create')"
                         >
-                            <MDBIcon icon="plus"></MDBIcon>
+                            <MDBIcon icon="plus"/> CREAR
                         </Link>
+                    </div>
+                    <div class="d-flex">
+
+                        <div class="form-outline">
+                            <MDBInput v-model="search" label="Buscar"/>
+                        </div>
+                        <MDBBtn class="ms-2">
+                            <MDBIcon icon="filter"/>
+                        </MDBBtn>
+
                     </div>
                 </div>
 
                 <hr>
 
 
-                <MDBTable align="middle" responsive border>
+                <MDBTable align="middle" size="xs" responsive border>
                     <thead>
                         <tr class="bg-primary text-white">
                             <th scope="col">#</th>
