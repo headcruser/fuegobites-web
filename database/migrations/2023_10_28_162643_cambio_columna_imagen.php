@@ -21,8 +21,25 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Crear una columna temporal para almacenar los datos convertidos
         Schema::table('productos', function (Blueprint $table) {
-            $table->binary('imagen')->nullable()->change();
+            $table->binary('imagen_temp')->nullable();
+        });
+
+        // Convertir los datos y transferirlos a la columna temporal
+        DB::statement("
+            UPDATE productos
+            SET imagen_temp = CONVERT(varbinary(max), imagen)
+        ");
+
+        // Eliminar la columna original
+        Schema::table('productos', function (Blueprint $table) {
+            $table->dropColumn('imagen');
+        });
+
+        // Renombrar la columna temporal
+        Schema::table('productos', function (Blueprint $table) {
+            $table->renameColumn('imagen_temp', 'imagen');
         });
     }
 };

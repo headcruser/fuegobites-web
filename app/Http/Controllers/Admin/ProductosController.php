@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 use App\Models\Producto;
 use Illuminate\Http\Request;
-use Image;
-use Inertia\Inertia;
+use App\Http\Controllers\Controller;
+use Intervention\Image\Laravel\Facades\Image;
 
 class ProductosController extends Controller
 {
@@ -49,19 +49,28 @@ class ProductosController extends Controller
         $data['visible'] =  $request->boolean('visible');
         $data['preparado'] = $request->boolean('preparado');
 
-        $producto = Producto::create($data);
+        try {
+            $producto = Producto::create($data);
 
-        if ($request->hasFile('imagen')) {
-            $image = $request->file('imagen');
-            $imgFile = Image::make($image->getRealPath());
+            if ($request->hasFile('imagen')) {
+                $image = $request->file('imagen');
+                $imgFile = Image::read($image->getRealPath());
 
-            $imgFile->resize(300, 250, function ($constraint) {
-                $constraint->aspectRatio();
-            });
+                $imgFile->resize(300, 250, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
 
-            $producto->imagen = (string) $imgFile->encode('data-url');
-            $producto->save();
+                $producto->imagen = (string) $imgFile->encode()->toDataUri();
+                $producto->save();
+            }
+
+        } catch (\Throwable $th) {
+            throw ValidationException::withMessages([
+                'error'   => ["Error al registrar el producto"],
+                'detail'   => $th->getMessage()
+            ]);
         }
+
 
         return redirect()->route('admin.productos.index')->with([
             'message' => 'Registro agregado correctamente'
@@ -85,27 +94,38 @@ class ProductosController extends Controller
             'imagen'            => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $data['visible'] =  $request->boolean('visible');
-        $data['preparado'] = $request->boolean('preparado');
+        try {
+            $data['visible'] =  $request->boolean('visible');
+            $data['preparado'] = $request->boolean('preparado');
 
-        $producto->update($data);
+            $producto->fill($data);
 
-        if ($request->hasFile('imagen')) {
-            $image = $request->file('imagen');
-            $imgFile = Image::make($image->getRealPath());
+            if ($request->hasFile('imagen')) {
+                $image = $request->file('imagen');
+                $imgFile = Image::read($image->getRealPath());
 
-            $imgFile->resize(200, 200, function ($constraint) {
-                $constraint->aspectRatio();
-            });
+                $imgFile->resize(200, 200, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
 
-            $producto->imagen = (string) $imgFile->encode('data-url');
-            $producto->save();
-        } else {
-            if ($request->boolean('remover_imagen')) {
-                $producto->imagen = null;
-                $producto->save();
+                $producto->imagen = (string) $imgFile->encode()->toDataUri();
+            } else {
+                if ($request->boolean('remover_imagen')) {
+                    $producto->imagen = null;
+                }
             }
+
+            $producto->save();
+        } catch (\Throwable $th) {
+            dd($th);
+
+            throw ValidationException::withMessages([
+                'error'   => ["Error al registrar el producto"],
+                'detail'  => $th->getMessage()
+            ]);
         }
+
+
 
         return redirect()->route('admin.productos.index')->with([
             'message' => 'Registro actualizado correctamente'

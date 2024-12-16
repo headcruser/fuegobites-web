@@ -166,7 +166,10 @@ class UsersController extends Controller
         }
 
         if ($request->has('roles')) {
-            $usuario->syncRoles($request->input('roles'));
+            //? VERIFICAR EL TIPO DE DATO RECIBIDO PARA SINCRONIZAR LOS ROLES
+            $roles = array_map('intval', $request->input('roles'));
+
+            $usuario->syncRoles($roles);
             $usuario->save();
         }
 
